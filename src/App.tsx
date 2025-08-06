@@ -15,7 +15,7 @@ function App() {
   );
 
   return (
-    <div className="w-full mx-auto max-w-[1444px] h-screen  bg-[#FCFAFF] flex flex-col px-6 pt-3">
+    <div className="w-full mx-auto max-w-[1444px] h-screen overflow-y-hidden  bg-[#FCFAFF] flex flex-col px-6 pt-3">
       <TitleContainer title={title} setTitle={setTitle} />
       <ToolBarToggle
         selectedToggle={selectedToolBarToggle}
