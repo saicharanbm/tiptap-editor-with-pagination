@@ -8,6 +8,7 @@ import TextHighlighter from "./text-toolbar/TextHighlighter";
 import TextType from "./text-toolbar/TextType";
 import UndoRedo from "./text-toolbar/UndoRedo";
 import TextAlignment from "./text-toolbar/TextAlignment";
+import AddListButtons from "./text-toolbar/AddListButtons";
 
 function TextToolBar() {
   return (
@@ -25,6 +26,8 @@ function TextToolBar() {
         <TextColor />
         <TextHighlighter />
       </div>
+      <Divider />
+      <AddListButtons />
       <Divider />
 
       <UndoRedo />
