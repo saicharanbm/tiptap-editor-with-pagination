@@ -19,11 +19,15 @@ function ToolBarButton({
       onClick={onClick}
       title={label}
       className={cn(
-        "text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-neutral-200/80",
-        isActive && "bg-neutral-200/80"
+        "text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-toggle-active",
+        isActive && "bg-toggle-active"
       )}
     >
-      <Icon className="size-4" />
+      <Icon
+        className="size-4"
+        color={isActive ? "#694c80" : "#242424"}
+        strokeWidth={2.5}
+      />
     </button>
   );
 }
