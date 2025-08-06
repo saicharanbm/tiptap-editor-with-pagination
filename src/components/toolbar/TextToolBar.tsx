@@ -1,6 +1,8 @@
 import Divider from "./Divider";
 import FontFamily from "./text-toolbar/FontFamily";
+import TextColor from "./text-toolbar/TextColor";
 import TextDecoration from "./text-toolbar/TextDecoration";
+import TextHighlighter from "./text-toolbar/TextHighlighter";
 import UndoRedo from "./text-toolbar/UndoRedo";
 
 function TextToolBar() {
@@ -10,7 +12,14 @@ function TextToolBar() {
       <Divider />
       <TextDecoration />
       <Divider />
+      <div className="flex gap-1">
+        <TextColor />
+        <TextHighlighter />
+      </div>
+      <Divider />
+
       <UndoRedo />
+      <Divider />
     </div>
   );
 }
