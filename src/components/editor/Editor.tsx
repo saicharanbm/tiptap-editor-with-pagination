@@ -3,6 +3,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import ImageResize from "tiptap-extension-resize-image";
 import Highlight from "@tiptap/extension-highlight";
+import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import { TextStyle, FontFamily, Color } from "@tiptap/extension-text-style";
 import { useEditorStore } from "@/store/useEditorStore";
@@ -48,7 +49,7 @@ function Editor() {
         nested: true,
       }),
       TaskList,
-
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       ImageResize,
       TextStyle,
       FontFamily,
