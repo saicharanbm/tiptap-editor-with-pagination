@@ -1,4 +1,5 @@
 import Divider from "./Divider";
+import AddLinkButton from "./text-toolbar/AddLinkButton";
 import FontFamily from "./text-toolbar/FontFamily";
 import TextColor from "./text-toolbar/TextColor";
 import TextDecoration from "./text-toolbar/TextDecoration";
@@ -14,6 +15,7 @@ function TextToolBar() {
       <TextType />
       <Divider />
       <TextDecoration />
+      <AddLinkButton />
       <Divider />
       <div className="flex gap-1">
         <TextColor />

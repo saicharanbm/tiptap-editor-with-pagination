@@ -34,7 +34,12 @@ function TextType() {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <button className="h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+        <button
+          className={cn(
+            "h-7 min-w-12 px-2 shrink-0 flex items-center  justify-center rounded-sm cursor-pointer focus:outline-none focus:ring-0 hover:text-toggle-text-active  overflow-hidden ",
+            open && "text-toggle-text-active"
+          )}
+        >
           <span className="truncate">{getCurrentHeading()}</span>
           {open ? (
             <ChevronUpIcon className="ml-2 size-4 shrink-0" />
@@ -48,10 +53,10 @@ function TextType() {
           <button
             key={value}
             className={cn(
-              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80",
+              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-toggle-active",
               ((value === 0 && !editor?.isActive("heading")) ||
                 editor?.isActive("heading", { level: value })) &&
-                "bg-neutral-200/80"
+                "bg-toggle-active"
             )}
             style={{ fontSize }}
             onClick={() => {
