@@ -1,4 +1,5 @@
 import Divider from "./Divider";
+import AddImageButton from "./text-toolbar/AddImageButton";
 import AddLinkButton from "./text-toolbar/AddLinkButton";
 import FontFamily from "./text-toolbar/FontFamily";
 import TextColor from "./text-toolbar/TextColor";
@@ -25,6 +26,7 @@ function TextToolBar() {
 
       <UndoRedo />
       <Divider />
+      <AddImageButton />
     </div>
   );
 }
