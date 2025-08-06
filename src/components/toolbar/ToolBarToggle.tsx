@@ -18,16 +18,16 @@ function ToolBarToggle({
   setSelectedToggle: Dispatch<SetStateAction<toolBarToggleLabels>>;
 }) {
   return (
-    <div className="w-full bg-white">
+    <div className="w-full ">
       <div className="flex gap-2">
         {toggleList.map(({ label }) => (
           <button
             key={label}
             onClick={() => setSelectedToggle(label)}
             className={cn(
-              "px-3 py-2 rounded-t-md ",
+              "px-3 py-2 rounded-t-md text-toggle-text",
               selectedToggle === label &&
-                "bg-[#e6dcef] text-[#694c80] font-medium"
+                "bg-toggle-active text-toggle-text-active font-medium"
             )}
           >
             {label}
