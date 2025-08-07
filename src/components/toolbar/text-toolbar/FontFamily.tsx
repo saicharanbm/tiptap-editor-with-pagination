@@ -49,6 +49,7 @@ export default function FontFamily() {
         {fonts.map(({ label, value }) => (
           <button
             key={label}
+            title="Font Family"
             className={cn(
               "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-toggle-active",
               editor?.getAttributes("textStyle").fontFamily === value &&
@@ -57,8 +58,6 @@ export default function FontFamily() {
             style={{ fontFamily: value }}
             onClick={() => {
               editor?.chain().focus().setFontFamily(value).run();
-
-              setOpen(false);
             }}
           >
             {value}

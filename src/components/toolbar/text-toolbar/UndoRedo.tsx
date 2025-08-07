@@ -10,7 +10,7 @@ function UndoRedo() {
       icon: Undo2Icon,
       onClick: () => {
         editor?.chain().focus().undo().run();
-        console.log(editor);
+        // console.log(editor);
       },
       isActive: false,
       isDisabled: !editor?.can().undo(),
@@ -25,8 +25,8 @@ function UndoRedo() {
       isDisabled: !editor?.can().redo(),
     },
   ];
-  console.log("can redo", editor?.can().redo());
-  console.log("can undo", editor?.can().undo());
+  // console.log("can redo", editor?.can().redo());
+  // console.log("can undo", editor?.can().undo());
 
   return (
     <>

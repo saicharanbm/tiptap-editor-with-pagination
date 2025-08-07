@@ -8,6 +8,7 @@ import Link from "@tiptap/extension-link";
 import { TextStyle, FontFamily, Color } from "@tiptap/extension-text-style";
 import { useEditorStore } from "@/store/useEditorStore";
 import { FontStyleExtension } from "@/extensions/font-size";
+import { LineHeightExtention } from "@/extensions/line-height";
 
 // import Image from "@tiptap/extension-image";
 function Editor() {
@@ -31,12 +32,13 @@ function Editor() {
     onFocus: ({ editor }) => {
       setEditor(editor);
     },
-    onBlur: ({ editor }) => {
-      setEditor(editor);
-    },
+    // onBlur: ({ editor }) => {
+    //   setEditor(editor);
+    // },
     onContentError: ({ editor }) => {
       setEditor(editor);
     },
+
     editorProps: {
       attributes: {
         style: "padding-left:56px; padding-right:56px;",
@@ -128,6 +130,7 @@ function Editor() {
         },
       }),
       FontStyleExtension,
+      LineHeightExtention,
     ],
   });
   return <EditorContent editor={editor} />;

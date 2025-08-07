@@ -10,11 +10,14 @@ import UndoRedo from "./text-toolbar/UndoRedo";
 import TextAlignment from "./text-toolbar/TextAlignment";
 import AddListButtons from "./text-toolbar/AddListButtons";
 import TextSize from "./text-toolbar/TextSize";
+import LineHeight from "./text-toolbar/LineHeight";
 
 function TextToolBar() {
   return (
     <div className="w-full flex items-center justify-center min-h-10 bg-[#F2EDF7] border-b-2 border-[#f0eaf7] p-1.5">
       <FontFamily />
+      <Divider />
+      <LineHeight />
       <Divider />
       <TextType />
       <Divider />
