@@ -16,18 +16,16 @@ function TextSize() {
 
     if (!isNaN(size) && size > 0) {
       editor?.chain().focus().setFontSize(`${size}px`).run();
-      //   setFontSize(size);
+
       setInputValue(`${size}px`);
     } else {
       setInputValue(currentFontSize);
     }
-    // setIsEditing(false);
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
   const handleFocus = () => {
-    // setIsEditing(true);
     setInputValue(currentFontSize.replace("px", ""));
   };
 
@@ -59,9 +57,9 @@ function TextSize() {
     <div className="flex items-center gap-x-0.5">
       <button
         onClick={decrement}
-        className="h-7 w-7 shrink-0 flex items-center justify-center  rounded-sm hover:bg-neutral-200/80"
+        className="h-7 w-7 shrink-0 flex items-center justify-center  rounded-sm hover:bg-toggle-active hover:text-toggle-text-active"
       >
-        <MinusIcon className="size-4" />
+        <MinusIcon className="size-4" strokeWidth={2.5} />
       </button>
       <input
         type="text"
@@ -70,14 +68,14 @@ function TextSize() {
         onFocus={handleFocus}
         onBlur={handleInputBlur}
         onKeyDown={handleKeyDown}
-        className="h-7 w-10 flex items-center justify-center  rounded-sm hover:bg-neutral-200/80 text-sm border border-neutral-400"
+        className="h-7 w-10 flex items-center justify-center  rounded-sm focus:bg-toggle-active focus:ring-0 focus:outline-none hover:bg-toggle-active text-sm border border-neutral-400"
       />
 
       <button
         onClick={increment}
-        className="h-7 w-7 shrink-0 flex items-center justify-center  rounded-sm hover:bg-neutral-200/80"
+        className="h-7 w-7 shrink-0 flex items-center justify-center  rounded-sm hover:bg-toggle-active hover:text-toggle-text-active"
       >
-        <PlusIcon className="size-4" />
+        <PlusIcon className="size-4" strokeWidth={2.5} />
       </button>
     </div>
   );

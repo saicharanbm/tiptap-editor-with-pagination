@@ -56,16 +56,22 @@ function AddImageButton() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center  rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
-            <ImageIcon className="size-4" />
+          <button className="text-sm h-7 min-w-7 flex items-center justify-center rounded-sm text-[#242424] hover:bg-toggle-active hover:text-toggle-text-active">
+            <ImageIcon className="size-4" strokeWidth={2.2} />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="p-2.5 flex items-center gap-x-2 bg-white rounded-sm shadow-sm top-2">
-          <DropdownMenuItem onClick={onUpload}>
+        <DropdownMenuContent className="p-2.5 flex items-center gap-x-2 bg-[#FCFAFF] rounded-sm shadow-sm top-2 ">
+          <DropdownMenuItem
+            onClick={onUpload}
+            className="focus:bg-toggle-active focus:text-toggle-text-active"
+          >
             <UploadIcon className="size-4 mr-2" />
             Upload
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>
+          <DropdownMenuItem
+            className="focus:bg-toggle-active focus:text-toggle-text-active"
+            onClick={() => setIsDialogOpen(true)}
+          >
             <SearchIcon className="size-4 mr-2" />
             Paste Image url
           </DropdownMenuItem>

@@ -48,7 +48,7 @@ function TextType() {
           )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1 bg-[#FCFAFF]">
         {headings.map(({ label, value, fontSize }) => (
           <button
             key={value}
