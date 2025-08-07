@@ -5,13 +5,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 function LineHeight() {
   const editor = useEditorStore((s) => s.editor);
   const [open, setOpen] = useState(false);
-  console.log("paragraph");
+  // console.log("paragraph");
   const getLineHeightType = useCallback((value: string) => {
     switch (value) {
       case "1":
@@ -34,6 +34,11 @@ function LineHeight() {
         editor?.getAttributes("heading").lineHeight
     )
   );
+  const lineHeightRef = useRef(lineHeight);
+
+  useEffect(() => {
+    lineHeightRef.current = lineHeight;
+  }, [lineHeight]);
 
   useEffect(() => {
     if (!editor) return;
@@ -44,8 +49,8 @@ function LineHeight() {
           editor.getAttributes("heading").lineHeight
       );
 
-      console.log("Line height changed:", currentLineHeight);
-      if (currentLineHeight !== lineHeight) {
+      // console.log("Line height changed:", currentLineHeight);
+      if (currentLineHeight !== lineHeightRef.current) {
         setLineHeight(currentLineHeight);
       }
     };
@@ -57,7 +62,7 @@ function LineHeight() {
     return () => {
       editor.off("transaction", handler);
     };
-  }, [editor, getLineHeightType, lineHeight]);
+  }, [editor, getLineHeightType]);
 
   const alignments = [
     { label: "Extra Tight", value: "1" },

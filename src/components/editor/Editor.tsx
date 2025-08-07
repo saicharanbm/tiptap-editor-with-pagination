@@ -38,6 +38,11 @@ function Editor() {
     onContentError: ({ editor }) => {
       setEditor(editor);
     },
+    content: `
+    <h1>Olga Tellis v. Bombay Municipal Corporation (1985).docx</h1>
+    <p> hadjkksdna</p>
+    
+`,
 
     editorProps: {
       attributes: {

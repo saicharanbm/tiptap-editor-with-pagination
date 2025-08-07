@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useEditorStore } from "@/store/useEditorStore";
 
 function AddLinkButton() {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const [link, setValue] = useState(editor?.getAttributes("link").href || "");
 
   const onChange = (href: string) => {

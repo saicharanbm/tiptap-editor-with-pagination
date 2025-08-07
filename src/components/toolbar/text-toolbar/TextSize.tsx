@@ -1,15 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 
 function TextSize() {
-  const { editor } = useEditorStore();
-  const currentFontSize = editor?.getAttributes("textStyle").fontSize || "16px";
+  const editor = useEditorStore((s) => s.editor);
+  const currentFontSize = useRef(
+    editor?.getAttributes("textStyle").fontSize || "16px"
+  );
+  console.log("currentFontSize", currentFontSize.current);
 
-  const [inputValue, setInputValue] = useState<string>(currentFontSize);
+  const [inputValue, setInputValue] = useState<string>(currentFontSize.current);
   useEffect(() => {
-    setInputValue(currentFontSize);
-  }, [currentFontSize]);
+    if (!editor) return;
+    const handler = () => {
+      console.log(editor?.getAttributes("textStyle").fontSize);
+
+      if (
+        (editor?.getAttributes("textStyle").fontSize || "16px") !==
+        currentFontSize.current
+      )
+        currentFontSize.current =
+          editor?.getAttributes("textStyle").fontSize || "16px";
+      setInputValue(currentFontSize.current);
+    };
+
+    editor?.on("transaction", handler);
+
+    return () => {
+      editor.off("transaction", handler);
+    };
+  }, [editor]);
 
   const updateFontSize = (newSize: string) => {
     const size = parseInt(newSize);
@@ -19,14 +39,14 @@ function TextSize() {
 
       setInputValue(`${size}px`);
     } else {
-      setInputValue(currentFontSize);
+      setInputValue(currentFontSize.current);
     }
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
   const handleFocus = () => {
-    setInputValue(currentFontSize.replace("px", ""));
+    setInputValue(currentFontSize.current.replace("px", ""));
   };
 
   const handleInputBlur = () => {

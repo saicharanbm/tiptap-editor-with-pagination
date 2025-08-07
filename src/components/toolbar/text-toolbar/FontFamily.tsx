@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
@@ -8,19 +8,35 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { fonts } from "@/utils/constants";
 export default function FontFamily() {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const [open, setOpen] = useState(false);
+  const [currentFont, setCurrentFont] = useState(
+    editor?.getAttributes("textStyle").fontFamily || "Arial"
+  );
+  const currentFontRef = useRef(currentFont);
 
-  const fonts: { label: string; value: string }[] = [
-    { label: "Arial", value: "Arial" },
-    { label: "Times New Roman", value: "Times New Roman" },
-    { label: "Courier New", value: "Courier New" },
-    { label: "Georgia", value: "Georgia" },
-    { label: "Verdana", value: "Verdana" },
-    { label: "Tahoma", value: "Tahoma" },
-    { label: "Garamond", value: "Garamond" },
-  ];
+  useEffect(() => {
+    currentFontRef.current = currentFont;
+  }, [currentFont]);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handler = () => {
+      const currentFont =
+        editor?.getAttributes("textStyle").fontFamily || "Arial";
+      if (currentFont !== currentFontRef.current) {
+        setCurrentFont(currentFont);
+      }
+    };
+    editor.on("transaction", handler);
+
+    return () => {
+      editor.off("transaction", handler);
+    };
+  }, [editor]);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -35,9 +51,7 @@ export default function FontFamily() {
             open && "text-toggle-text-active"
           )}
         >
-          <span className="truncate">
-            {editor?.getAttributes("textStyle").fontFamily || "Arial"}
-          </span>
+          <span className="truncate">{currentFont}</span>
           {open ? (
             <ChevronUpIcon className="ml-2 size-4 shrink-0" />
           ) : (

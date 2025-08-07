@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
@@ -8,39 +8,55 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { headings } from "@/utils/constants";
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 function TextType() {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const [open, setOpen] = useState(false); // local dropdown open state
-  const headings: { label: string; value: number; fontSize: string }[] = [
-    { label: "P", value: 0, fontSize: "16px" },
-    { label: "H1", value: 1, fontSize: "32px" },
-    { label: "H2", value: 2, fontSize: "24px" },
-    { label: "H3", value: 3, fontSize: "20px" },
-    { label: "H4", value: 4, fontSize: "18px" },
-    { label: "H5", value: 5, fontSize: "16px" },
-    { label: "H6", value: 6, fontSize: "14px" },
-  ];
-
-  const getCurrentHeading = () => {
+  const getCurrentHeading = useCallback(() => {
     for (let level = 1; level <= 6; level++) {
       if (editor?.isActive("heading", { level: level })) {
         return `H${level}`;
       }
     }
     return "P";
-  };
+  }, [editor]);
+  const [currentTextType, setCurrentTextType] = useState(getCurrentHeading());
+  // we are using ref to pass the updated value to the handler
+  const currentTextTypeRef = useRef(currentTextType);
+
+  useEffect(() => {
+    currentTextTypeRef.current = currentTextType;
+  }, [currentTextType]);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handler = () => {
+      const currentTextType = getCurrentHeading();
+      if (currentTextType !== currentTextTypeRef.current) {
+        setCurrentTextType(currentTextType);
+      }
+    };
+
+    editor.on("transaction", handler);
+
+    return () => {
+      editor.off("transaction", handler);
+    };
+  }, [editor, getCurrentHeading]);
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 min-w-12 px-2 shrink-0 flex items-center  justify-center rounded-sm cursor-pointer focus:outline-none focus:ring-0 hover:text-toggle-text-active  overflow-hidden ",
+            "h-7 min-w-18 px-2 shrink-0 flex items-center  justify-center rounded-sm cursor-pointer focus:outline-none focus:ring-0 hover:text-toggle-text-active  overflow-hidden ",
             open && "text-toggle-text-active"
           )}
         >
-          <span className="truncate">{getCurrentHeading()}</span>
+          <span className="truncate">{currentTextType}</span>
           {open ? (
             <ChevronUpIcon className="ml-2 size-4 shrink-0" />
           ) : (

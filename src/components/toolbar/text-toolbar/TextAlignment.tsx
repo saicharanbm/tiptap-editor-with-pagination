@@ -12,7 +12,6 @@ function TextAlignment() {
         label: "Text Align Left",
         value: "left",
         icon: AlignLeftIcon,
-        isActive: editor?.isActive({ textAlign: "left" }),
         onClick: () => {
           editor?.chain().focus().setTextAlign("left").run();
         },
@@ -21,7 +20,6 @@ function TextAlignment() {
         label: "Text Align Center",
         value: "center",
         icon: AlignCenterIcon,
-        isActive: editor?.isActive({ textAlign: "center" }),
         onClick: () => {
           editor?.chain().focus().setTextAlign("center").run();
         },
@@ -30,7 +28,6 @@ function TextAlignment() {
         label: "Text Align Right",
         value: "right",
         icon: AlignRightIcon,
-        isActive: editor?.isActive({ TextAlign: "right" }),
         onClick: () => {
           editor?.chain().focus().setTextAlign("right").run();
         },
@@ -39,11 +36,11 @@ function TextAlignment() {
     [editor]
   );
   return (
-    <>
+    <div className="flex gap-1">
       {alignments.map((items) => (
         <ToolBarButton key={items.label} {...items} />
       ))}
-    </>
+    </div>
   );
 }
 

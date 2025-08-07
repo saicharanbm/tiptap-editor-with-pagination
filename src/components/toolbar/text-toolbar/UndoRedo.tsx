@@ -12,7 +12,6 @@ function UndoRedo() {
         editor?.chain().focus().undo().run();
         // console.log(editor);
       },
-      isActive: false,
       isDisabled: !editor?.can().undo(),
     },
     {
@@ -21,7 +20,6 @@ function UndoRedo() {
       onClick: () => {
         editor?.chain().focus().redo().run();
       },
-      isActive: false,
       isDisabled: !editor?.can().redo(),
     },
   ];

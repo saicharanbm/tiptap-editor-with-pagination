@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 function AddImageButton() {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(
     editor?.getAttributes("link").href || ""
