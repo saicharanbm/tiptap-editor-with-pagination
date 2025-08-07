@@ -3,7 +3,7 @@ import { Redo2Icon, Undo2Icon } from "lucide-react";
 import ToolBarButton from "../ToolBarButton";
 
 function UndoRedo() {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const undoRedoButtons = [
     {
       label: "Undo",
@@ -12,7 +12,6 @@ function UndoRedo() {
         editor?.chain().focus().undo().run();
         // console.log(editor);
       },
-      isDisabled: !editor?.can().undo(),
     },
     {
       label: "Redo",
@@ -20,7 +19,6 @@ function UndoRedo() {
       onClick: () => {
         editor?.chain().focus().redo().run();
       },
-      isDisabled: !editor?.can().redo(),
     },
   ];
   // console.log("can redo", editor?.can().redo());

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import ToolBarButton from "../ToolBarButton";
 
 function TextAlignment() {
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const alignments = useMemo(
     () => [
       {

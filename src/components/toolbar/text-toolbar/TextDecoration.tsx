@@ -10,7 +10,7 @@ import ToolBarButton from "../ToolBarButton";
 function TextDecoration() {
   // useEditorStore((s) => s.editor) does not work in this case becouse the domponent does not re-render on every minute
   //changes in the editor, which is require in this case to track isActive.
-  const { editor } = useEditorStore();
+  const editor = useEditorStore((s) => s.editor);
   const decorationList = [
     {
       label: "Bold",
@@ -18,7 +18,6 @@ function TextDecoration() {
       onClick: () => {
         editor?.chain().focus().toggleBold().run();
       },
-      isActive: editor?.isActive("bold"),
     },
     {
       label: "Italic",
@@ -26,7 +25,6 @@ function TextDecoration() {
       onClick: () => {
         editor?.chain().focus().toggleItalic().run();
       },
-      isActive: editor?.isActive("italic"),
     },
     {
       label: "Underline",
@@ -34,15 +32,13 @@ function TextDecoration() {
       onClick: () => {
         editor?.chain().focus().toggleUnderline().run();
       },
-      isActive: editor?.isActive("underline"),
     },
     {
-      label: "strike",
+      label: "Strike",
       icon: StrikethroughIcon,
       onClick: () => {
         editor?.chain().focus().toggleStrike().run();
       },
-      isActive: editor?.isActive("strike"),
     },
   ];
   return (
