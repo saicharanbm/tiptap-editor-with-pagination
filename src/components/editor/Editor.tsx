@@ -7,6 +7,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import { TextStyle, FontFamily, Color } from "@tiptap/extension-text-style";
 import { useEditorStore } from "@/store/useEditorStore";
+import { FontStyleExtension } from "@/extensions/font-size";
 
 // import Image from "@tiptap/extension-image";
 function Editor() {
@@ -126,6 +127,7 @@ function Editor() {
           }
         },
       }),
+      FontStyleExtension,
     ],
   });
   return <EditorContent editor={editor} />;

@@ -29,11 +29,11 @@ function AddListButtons() {
     [editor]
   );
   return (
-    <>
+    <div className="flex gap-1">
       {alignments.map((items) => (
         <ToolBarButton key={items.label} {...items} />
       ))}
-    </>
+    </div>
   );
 }
 

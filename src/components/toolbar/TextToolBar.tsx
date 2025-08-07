@@ -9,6 +9,7 @@ import TextType from "./text-toolbar/TextType";
 import UndoRedo from "./text-toolbar/UndoRedo";
 import TextAlignment from "./text-toolbar/TextAlignment";
 import AddListButtons from "./text-toolbar/AddListButtons";
+import TextSize from "./text-toolbar/TextSize";
 
 function TextToolBar() {
   return (
@@ -16,6 +17,8 @@ function TextToolBar() {
       <FontFamily />
       <Divider />
       <TextType />
+      <Divider />
+      <TextSize />
       <Divider />
       <TextDecoration />
       <AddLinkButton />
