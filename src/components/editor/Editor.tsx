@@ -11,6 +11,7 @@ import { FontStyleExtension } from "@/extensions/font-size";
 import { LineHeightExtention } from "@/extensions/line-height";
 import { PageBreak } from "@/extensions/page-break";
 import { useEffect } from "react";
+import CharacterCount from "@tiptap/extension-character-count";
 
 // import Image from "@tiptap/extension-image";
 function Editor() {
@@ -188,6 +189,9 @@ function Editor() {
       FontStyleExtension,
       LineHeightExtention,
       PageBreak,
+      CharacterCount.configure({
+        limit: null,
+      }),
     ],
   });
 

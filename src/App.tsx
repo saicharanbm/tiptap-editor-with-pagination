@@ -7,7 +7,7 @@ import PageToolBar from "./components/toolbar/PageToolBar";
 import EditorContainer from "./components/editor/EditorContainer";
 import TitleContainer from "./components/TitleContainer";
 import PagePreview from "./components/preview/PagePreview";
-import CharacterCount from "./components/CharacterCount";
+import CurrentCharacterCount from "./components/CharacterCount";
 import PageNumberControles from "./components/PageNumberControles";
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
       <div className="lg:grid lg:grid-cols-12  ">
         <div className="lg:col-span-9 relative">
           <EditorContainer />
-          <CharacterCount />
+          <CurrentCharacterCount />
           <PageNumberControles />
         </div>
 
