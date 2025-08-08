@@ -25,11 +25,11 @@ function UndoRedo() {
   // console.log("can undo", editor?.can().undo());
 
   return (
-    <>
+    <div className="flex gap-1">
       {undoRedoButtons.map((data) => (
         <ToolBarButton key={data.label} {...data} />
       ))}
-    </>
+    </div>
   );
 }
 

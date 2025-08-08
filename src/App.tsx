@@ -6,6 +6,9 @@ import TextToolBar from "./components/toolbar/TextToolBar";
 import PageToolBar from "./components/toolbar/PageToolBar";
 import EditorContainer from "./components/editor/EditorContainer";
 import TitleContainer from "./components/TitleContainer";
+import PagePreview from "./components/preview/PagePreview";
+import CharacterCount from "./components/CharacterCount";
+import PageNumberControles from "./components/PageNumberControles";
 
 function App() {
   const [selectedToolBarToggle, setSelectedToolBarToggle] =
@@ -22,7 +25,15 @@ function App() {
         setSelectedToggle={setSelectedToolBarToggle}
       />
       {selectedToolBarToggle === "Text" ? <TextToolBar /> : <PageToolBar />}
-      <EditorContainer />
+      <div className="lg:grid lg:grid-cols-12  ">
+        <div className="lg:col-span-9 relative">
+          <EditorContainer />
+          <CharacterCount />
+          <PageNumberControles />
+        </div>
+
+        <PagePreview />
+      </div>
     </div>
   );
 }

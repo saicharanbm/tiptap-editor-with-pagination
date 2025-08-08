@@ -24,8 +24,10 @@ function TextToolBar() {
       <Divider />
       <TextSize />
       <Divider />
-      <TextDecoration />
-      <AddLinkButton />
+      <div className="flex gap-1">
+        <TextDecoration />
+        <AddLinkButton />
+      </div>
       <Divider />
       <TextAlignment />
       <Divider />
@@ -39,8 +41,10 @@ function TextToolBar() {
 
       <UndoRedo />
       <Divider />
-      <AddImageButton />
-      <PageBreak />
+      <div className="flex gap-1">
+        <AddImageButton />
+        <PageBreak />
+      </div>
     </div>
   );
 }
