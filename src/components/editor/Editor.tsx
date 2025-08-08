@@ -9,10 +9,54 @@ import { TextStyle, FontFamily, Color } from "@tiptap/extension-text-style";
 import { useEditorStore } from "@/store/useEditorStore";
 import { FontStyleExtension } from "@/extensions/font-size";
 import { LineHeightExtention } from "@/extensions/line-height";
+import { PageBreak } from "@/extensions/page-break";
+import { useEffect } from "react";
 
 // import Image from "@tiptap/extension-image";
 function Editor() {
   const setEditor = useEditorStore((s) => s.setEditor);
+  const pageData = useEditorStore((s) => s.pageData);
+  const currentPage = useEditorStore((s) => s.currentPage);
+  const setPageData = useEditorStore((s) => s.setPageData);
+  const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
+
+  console.log("pageData", pageData);
+  console.log("currentPage", currentPage);
+  // const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
+
+  const handlePageBreak = () => {
+    if (!editor) return;
+
+    const currentContent = editor.getHTML();
+    const pageBreakHTML =
+      '<div data-type="page-break" class="page-break-marker"></div>';
+
+    // Find if there's a page break in the content
+    const pageBreakIndex = currentContent.indexOf(pageBreakHTML);
+
+    if (pageBreakIndex !== -1) {
+      // Split content at page break
+      const beforeBreak = currentContent.substring(0, pageBreakIndex);
+      const afterBreak = currentContent.substring(
+        pageBreakIndex + pageBreakHTML.length
+      );
+
+      console.log("beforeBreak", beforeBreak);
+      console.log("afterBreak", afterBreak);
+
+      // Update current page with content before break
+      setPageData({ id: currentPage + 1, content: beforeBreak }, currentPage);
+
+      // Create new page with content after break (if any)
+      if (afterBreak.trim()) {
+        const newPageId = currentPage + 1;
+        setPageData({ id: newPageId + 1, content: afterBreak }, newPageId);
+        // Switch to the new page
+        setCurrentPage(newPageId);
+      }
+    }
+  };
+
   const editor = useEditor({
     onCreate: ({ editor }) => {
       setEditor(editor);
@@ -22,6 +66,18 @@ function Editor() {
     },
     onUpdate: ({ editor }) => {
       setEditor(editor);
+      // Check if a page break was just inserted
+      const content = editor.getHTML();
+      // Check if a page break was just inserted
+      if (content.includes('<div data-type="page-break"')) {
+        // Delay the handling to ensure the content is properly set
+        setTimeout(() => {
+          handlePageBreak();
+        }, 1000);
+      } else {
+        // Normal content update
+        setPageData({ id: currentPage, content }, currentPage);
+      }
     },
     onSelectionUpdate: ({ editor }) => {
       setEditor(editor);
@@ -32,17 +88,11 @@ function Editor() {
     onFocus: ({ editor }) => {
       setEditor(editor);
     },
-    // onBlur: ({ editor }) => {
-    //   setEditor(editor);
-    // },
+
     onContentError: ({ editor }) => {
       setEditor(editor);
     },
-    content: `
-    <h1>Olga Tellis v. Bombay Municipal Corporation (1985).docx</h1>
-    <p> hadjkksdna</p>
-    
-`,
+    content: pageData[currentPage].content,
 
     editorProps: {
       attributes: {
@@ -137,8 +187,21 @@ function Editor() {
       }),
       FontStyleExtension,
       LineHeightExtention,
+      PageBreak,
     ],
   });
+
+  // After editor is initialized
+  useEffect(() => {
+    if (editor && pageData[currentPage]) {
+      const currentContent = editor.getHTML();
+      const newContent = pageData[currentPage].content;
+
+      if (currentContent !== newContent) {
+        editor.commands.setContent(newContent);
+      }
+    }
+  }, [currentPage, pageData, editor]);
   return <EditorContent editor={editor} className="w-full flex-1 " />;
 }
 

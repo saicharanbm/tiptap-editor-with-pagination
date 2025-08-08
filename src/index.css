@@ -249,32 +249,36 @@
   h5,
   h6 {
     line-height: 1.1;
-    margin-top: 0.5rem;
+    /* margin-top: 0.5rem; */
     text-wrap: pretty;
   }
 
   h1,
   h2 {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
   }
 
   h1 {
-    font-size: 1.4rem;
+    font-size: 2rem;
   }
 
   h2 {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
   }
 
   h3 {
-    font-size: 1.1rem;
+    font-size: 1.6rem;
   }
 
-  h4,
-  h5,
+  h4 {
+    font-size: 1.4rem;
+  }
+  h5 {
+    font-size: 1.2rem;
+  }
   h6 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   /* Image styling */
@@ -300,4 +304,31 @@
       text-decoration: underline;
     }
   }
+}
+
+.page-break-marker {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #ff6b6b 20%,
+    #ff6b6b 80%,
+    transparent 100%
+  );
+  margin: 10px 0;
+  position: relative;
+}
+
+.page-break-marker::after {
+  content: "Page Break - Content below will move to next page";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff6b6b;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
 }
