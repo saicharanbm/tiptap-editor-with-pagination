@@ -18,7 +18,6 @@ function ToolBarButton({
   icon: Icon,
 }: // isDisabled = false,
 ToolBarButtonProps) {
-  // convert isActive and isDisabled and conditionally handle based on lable
   const editor = useEditorStore((s) => s.editor);
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);

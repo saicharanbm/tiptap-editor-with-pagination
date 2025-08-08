@@ -36,10 +36,10 @@ function TitleContainer({
     }
   };
   return (
-    <div className=" w-full p-2 flex justify-between items-center">
-      <div className="flex items-center gap-4">
+    <div className=" w-full p-2 flex justify-between items-center flex-wrap">
+      <div className="flex items-center gap-4 ">
         <p
-          className="text-primary text-md tracking-wide truncate max-w-96"
+          className="text-primary text-md tracking-wide truncate max-w-24 md:max-w-96"
           title={title}
         >
           {title}

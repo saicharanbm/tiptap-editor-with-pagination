@@ -46,9 +46,10 @@ function Editor() {
 
     editorProps: {
       attributes: {
-        style: "padding-left:56px; padding-right:56px;",
+        style:
+          "padding-left:34px; padding-right:34px; padding-top:34px; padding-bottom:34px;",
         class:
-          "focus:outline-none print:border-0 bg-white  border border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
+          "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-h-[1054px] w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text prose prose-sm sm:prose lg:prose-lg xl:prose-2xl",
       },
     },
     extensions: [
@@ -138,7 +139,7 @@ function Editor() {
       LineHeightExtention,
     ],
   });
-  return <EditorContent editor={editor} />;
+  return <EditorContent editor={editor} className="w-full flex-1 " />;
 }
 
 export default Editor;

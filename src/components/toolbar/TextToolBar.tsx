@@ -14,7 +14,7 @@ import LineHeight from "./text-toolbar/LineHeight";
 
 function TextToolBar() {
   return (
-    <div className="w-full flex items-center justify-center min-h-10 bg-[#F2EDF7] border-b-2 border-[#f0eaf7] p-1.5">
+    <div className="w-full flex items-center justify-center  flex-wrap gap-y-2  bg-[#F2EDF7] border-b-2 border-[#f0eaf7] p-1.5">
       <FontFamily />
       <Divider />
       <LineHeight />

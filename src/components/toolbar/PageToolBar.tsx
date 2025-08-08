@@ -1,5 +1,9 @@
 function PageToolBar() {
-  return <div className="w-full min-h-10 bg-[#F2EDF7]">Page ToolBar</div>;
+  return (
+    <div className="w-full flex items-center justify-center  flex-wrap gap-y-2  bg-[#F2EDF7] border-b-2 border-[#f0eaf7] p-1.5">
+      Page ToolBar
+    </div>
+  );
 }
 
 export default PageToolBar;
