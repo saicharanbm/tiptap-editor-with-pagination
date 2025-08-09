@@ -11,7 +11,6 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 function LineHeight() {
   const editor = useEditorStore((s) => s.editor);
   const [open, setOpen] = useState(false);
-  // console.log("paragraph");
   const getLineHeightType = useCallback((value: string) => {
     switch (value) {
       case "1":
@@ -49,7 +48,6 @@ function LineHeight() {
           editor.getAttributes("heading").lineHeight
       );
 
-      // console.log("Line height changed:", currentLineHeight);
       if (currentLineHeight !== lineHeightRef.current) {
         setLineHeight(currentLineHeight);
       }
@@ -100,9 +98,7 @@ function LineHeight() {
                 "bg-toggle-active"
             )}
             onClick={() => {
-              //   console.log("Value before :", value);
               editor?.chain().focus().setLineHeight(value).run();
-              //   console.log(editor?.getAttributes("paragraph").lineHeight);
             }}
           >
             {value}

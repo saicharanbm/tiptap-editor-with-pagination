@@ -7,14 +7,11 @@ function TextSize() {
   const currentFontSize = useRef(
     editor?.getAttributes("textStyle").fontSize || "16px"
   );
-  console.log("currentFontSize", currentFontSize.current);
 
   const [inputValue, setInputValue] = useState<string>(currentFontSize.current);
   useEffect(() => {
     if (!editor) return;
     const handler = () => {
-      console.log(editor?.getAttributes("textStyle").fontSize);
-
       if (
         (editor?.getAttributes("textStyle").fontSize || "16px") !==
         currentFontSize.current

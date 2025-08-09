@@ -8,7 +8,7 @@ interface ToolBarButtonProps {
   onClick: () => void;
   // isActive?: boolean;
   icon: LucideIcon;
-  // isDisabled?: boolean;
+  isDisabled?: boolean;
 }
 
 function ToolBarButton({
@@ -16,30 +16,20 @@ function ToolBarButton({
   onClick,
   // isActive = false,
   icon: Icon,
+  isDisabled = false,
 }: // isDisabled = false,
 ToolBarButtonProps) {
   const editor = useEditorStore((s) => s.editor);
   const [isActive, setIsActive] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
   const stateDataRef = useRef({ isActive, isDisabled });
-
   useEffect(() => {
     stateDataRef.current = { isActive, isDisabled };
   }, [isActive, isDisabled]);
-  console.log("label", label);
 
   useEffect(() => {
     if (!editor) return;
     const handler = () => {
       switch (label) {
-        case "Undo":
-          if (!editor.can().undo() !== stateDataRef.current.isDisabled)
-            setIsDisabled(!editor.can().undo());
-          break;
-        case "Redo":
-          if (!editor.can().redo() !== stateDataRef.current.isDisabled)
-            setIsDisabled(!editor.can().redo());
-          break;
         case "Bold":
           if (editor.isActive("bold") !== stateDataRef.current.isActive)
             setIsActive(editor.isActive("bold"));

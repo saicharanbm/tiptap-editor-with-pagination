@@ -22,8 +22,6 @@ function Editor() {
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const addNewPage = useEditorStore((s) => s.addNewPage);
 
-  console.log("pageData", pageData);
-  console.log("currentPage", currentPage);
   // const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
 
   const handlePageBreak = () => {
@@ -42,9 +40,6 @@ function Editor() {
       const afterBreak = currentContent.substring(
         pageBreakIndex + pageBreakHTML.length
       );
-
-      console.log("beforeBreak", beforeBreak);
-      console.log("afterBreak", afterBreak);
 
       // Update current page with content before break
       setPageData({ content: beforeBreak }, currentPage);

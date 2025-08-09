@@ -4,7 +4,6 @@ import { BetweenHorizonalEndIcon } from "lucide-react";
 
 function PageBreak() {
   const editor = useEditorStore((s) => s.editor);
-  console.log(editor);
   return (
     <ToolBarButton
       label="Page Break"

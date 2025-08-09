@@ -45,7 +45,6 @@ function AddImageButton() {
   };
 
   const handleImageUrlSubmition = () => {
-    // console.log("imageUrl", imageUrl);
     if (imageUrl) {
       onChange(imageUrl);
       setImageUrl("");

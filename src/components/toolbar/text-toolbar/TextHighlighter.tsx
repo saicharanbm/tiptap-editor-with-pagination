@@ -37,7 +37,7 @@ function TextHighlighter() {
           <HighlighterIcon className="size-4 shrink-0" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-0">
+      <DropdownMenuContent className="p-0 z-50">
         <SketchPicker
           color={color}
           onChange={(color: ColorResult) => {

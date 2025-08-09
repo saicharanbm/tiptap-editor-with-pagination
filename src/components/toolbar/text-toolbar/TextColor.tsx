@@ -41,7 +41,7 @@ function TextColor() {
           <div className="h-1 w-full " style={{ backgroundColor: color }} />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-0">
+      <DropdownMenuContent className="p-0 z-50">
         <SketchPicker
           color={color}
           onChange={(color: ColorResult) => {
