@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import { type Dispatch, type SetStateAction } from "react";
-import { type toolBarToggleLabels } from "@/types";
+import { type ToolBarToggleLabels } from "@/types";
 
-const toggleList: { label: toolBarToggleLabels }[] = [
+const toggleList: { label: ToolBarToggleLabels }[] = [
   {
     label: "Text",
   },
@@ -14,8 +14,8 @@ function ToolBarToggle({
   selectedToggle,
   setSelectedToggle,
 }: {
-  selectedToggle: toolBarToggleLabels;
-  setSelectedToggle: Dispatch<SetStateAction<toolBarToggleLabels>>;
+  selectedToggle: ToolBarToggleLabels;
+  setSelectedToggle: Dispatch<SetStateAction<ToolBarToggleLabels>>;
 }) {
   return (
     <div className="w-full ">
