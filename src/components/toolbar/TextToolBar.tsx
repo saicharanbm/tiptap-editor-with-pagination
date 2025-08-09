@@ -11,7 +11,6 @@ import TextAlignment from "./text-toolbar/TextAlignment";
 import AddListButtons from "./text-toolbar/AddListButtons";
 import TextSize from "./text-toolbar/TextSize";
 import LineHeight from "./text-toolbar/LineHeight";
-import PageBreak from "./text-toolbar/PageBreak";
 
 function TextToolBar() {
   return (
@@ -43,7 +42,6 @@ function TextToolBar() {
       <Divider />
       <div className="flex gap-1">
         <AddImageButton />
-        <PageBreak />
       </div>
     </div>
   );

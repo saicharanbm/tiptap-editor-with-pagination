@@ -54,10 +54,27 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     });
   },
   deletePage: (index) => {
-    set((state) => {
-      if (index < 0 || index >= state.pageData.length) return state;
-      const updatedPageData = state.pageData.filter((_, i) => i !== index);
-      return { pageData: updatedPageData };
+    const state = get();
+    if (index < 0 || index >= state.pageData.length) return;
+    //update the current page to avoide trying to access deleted page
+    const newPageNo =
+      index === state.currentPage &&
+      index === state.pageData.length - 1 &&
+      index > 0
+        ? index - 1
+        : index;
+    const isOnlyPage = state.pageData.length === 1;
+    if (isOnlyPage) {
+      set({
+        pageData: [{ content: "" }],
+        currentPage: 0,
+      });
+      return;
+    }
+    const updatedPageData = state.pageData.filter((_, i) => i !== index);
+    set({
+      pageData: updatedPageData,
+      currentPage: newPageNo,
     });
   },
   rearrangePage: (fromIndex: number, toIndex: number) => {
