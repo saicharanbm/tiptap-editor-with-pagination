@@ -14,6 +14,65 @@ function PagePreviewContainer() {
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const currentPage = useEditorStore((s) => s.currentPage);
 
+  // Drag and drop state
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  const rearrangePage = useEditorStore((s) => s.rearrangePage);
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html", ""); // Required for Firefox
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    setDragOverIndex(index);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only clear dragOverIndex if we're leaving the container entirely
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+
+    if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+      setDragOverIndex(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+
+    if (draggedIndex !== null && draggedIndex !== dropIndex) {
+      rearrangePage(draggedIndex, dropIndex);
+
+      // Update current page if necessary
+      if (currentPage === draggedIndex) {
+        setCurrentPage(dropIndex);
+      } else if (currentPage === dropIndex) {
+        setCurrentPage(draggedIndex);
+      } else if (
+        (draggedIndex < currentPage && dropIndex >= currentPage) ||
+        (draggedIndex > currentPage && dropIndex <= currentPage)
+      ) {
+        // Adjust current page index based on the move
+        const newCurrentPage =
+          draggedIndex < currentPage ? currentPage - 1 : currentPage + 1;
+        setCurrentPage(newCurrentPage);
+      }
+    }
+
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
   return (
     <div className="bg-[#FCFAFF] h-[calc(100vh-189px)] hidden lg:col-span-3 lg:block pl-3 pt-1 ">
       <div className="flex gap-2 p-2">
@@ -43,10 +102,20 @@ function PagePreviewContainer() {
             pageData.map((pageHTML, index) => (
               <div
                 key={index}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, index)}
+                onDragEnd={handleDragEnd}
                 onClick={() => setCurrentPage(index)}
                 className={cn(
-                  "shadow-md border bg-white w-48 h-62 rounded-md p-1.5 mx-auto overflow-hidden border-[#A5A4A7] select-none",
-                  currentPage === index && "border-3 border-blue-400"
+                  "shadow-md border bg-white w-48 h-62 rounded-md p-1.5 mx-auto overflow-hidden border-[#A5A4A7] select-none cursor-move transition-all duration-200",
+                  currentPage === index && "border-3 border-blue-400",
+                  draggedIndex === index && "opacity-50 transform scale-105",
+                  dragOverIndex === index &&
+                    draggedIndex !== index &&
+                    "border-2 border-dashed border-purple-400 transform scale-102"
                 )}
                 dangerouslySetInnerHTML={{ __html: pageHTML.content }}
               />

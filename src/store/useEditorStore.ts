@@ -8,6 +8,8 @@ interface EditorStore {
   addNewPage: (index: number, data?: { content: string }) => void;
   deletePage: (index: number) => void;
   currentPage: number;
+  rearrangePage: (fromIndex: number, toIndex: number) => void;
+
   setCurrentPage: (index: number) => void;
   incrementPage: () => void;
   decrementPage: () => void;
@@ -15,7 +17,7 @@ interface EditorStore {
   setEditor: (editor: Editor | null) => void;
 }
 
-export const useEditorStore = create<EditorStore>((set) => ({
+export const useEditorStore = create<EditorStore>((set, get) => ({
   editor: null,
   pageData: [
     {
@@ -58,6 +60,58 @@ export const useEditorStore = create<EditorStore>((set) => ({
       return { pageData: updatedPageData };
     });
   },
+  rearrangePage: (fromIndex: number, toIndex: number) => {
+    const state = get();
+
+    // Validate indices
+    if (
+      fromIndex < 0 ||
+      fromIndex >= state.pageData.length ||
+      toIndex < 0 ||
+      toIndex >= state.pageData.length ||
+      fromIndex === toIndex
+    ) {
+      return;
+    }
+
+    // Create a copy of the pageData array
+    const newPageData = [...state.pageData];
+
+    // Remove the page from the original position
+    const [movedPage] = newPageData.splice(fromIndex, 1);
+
+    // Insert the page at the new position
+    newPageData.splice(toIndex, 0, movedPage);
+
+    // Calculate new currentPage index after rearrangement
+    let newCurrentPage = state.currentPage;
+
+    if (state.currentPage === fromIndex) {
+      // If the current page was moved, update to new position
+      newCurrentPage = toIndex;
+    } else if (state.currentPage === toIndex) {
+      // If current page was displaced by the moved page
+      newCurrentPage = fromIndex < toIndex ? toIndex - 1 : toIndex + 1;
+    } else if (fromIndex < state.currentPage && toIndex >= state.currentPage) {
+      // Page moved from before current to after current
+      newCurrentPage = state.currentPage - 1;
+    } else if (fromIndex > state.currentPage && toIndex <= state.currentPage) {
+      // Page moved from after current to before current
+      newCurrentPage = state.currentPage + 1;
+    }
+
+    // Ensure newCurrentPage is within bounds
+    newCurrentPage = Math.max(
+      0,
+      Math.min(newCurrentPage, newPageData.length - 1)
+    );
+
+    set({
+      pageData: newPageData,
+      currentPage: newCurrentPage,
+    });
+  },
+
   currentPage: 0,
   setCurrentPage: (index) => {
     set((state) => {

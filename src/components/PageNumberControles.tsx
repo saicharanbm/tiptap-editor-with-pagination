@@ -34,6 +34,7 @@ function PageNumberControles() {
               const newPage = parseInt(e.currentTarget.value) - 1;
               if (!isNaN(newPage)) {
                 setCurrentPage(newPage);
+                setInputValue(String(newPage + 1));
                 e.currentTarget.blur();
               }
             }
