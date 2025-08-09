@@ -1,12 +1,19 @@
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import PageControlButton from "./PageControlButtons";
 import { useEditorStore } from "@/store/useEditorStore";
+import { useEffect, useState } from "react";
 
 function PageNumberControles() {
   const currentPage = useEditorStore((s) => s.currentPage);
+  const [inputValue, setInputValue] = useState<string>(String(currentPage + 1));
+  const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const pageData = useEditorStore((s) => s.pageData);
   const incrementPage = useEditorStore((s) => s.incrementPage);
   const decrementPage = useEditorStore((s) => s.decrementPage);
+
+  useEffect(() => {
+    setInputValue(String(currentPage + 1));
+  }, [currentPage]);
 
   return (
     <PageControlButton direction="right">
@@ -16,13 +23,18 @@ function PageNumberControles() {
           <ChevronUpIcon className="size-4" color="#242424" strokeWidth={1.8} />
         </button>
         <input
-          value={currentPage + 1}
-          className="w-12 text-center  bg-[#E6E4E9]  rounded-sm border border-[#FCFAFF] shadow-sm focus:outline-none focus:ring-0"
+          type="number"
+          value={inputValue}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          className="w-12 text-center  bg-[#E6E4E9]  rounded-sm border border-[#FCFAFF] shadow-sm focus:outline-none focus:ring-0 no-spinner"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               const newPage = parseInt(e.currentTarget.value) - 1;
               if (!isNaN(newPage)) {
-                //   useEditorStore.getState().setCurrentPage(newPage);
+                setCurrentPage(newPage);
+                e.currentTarget.blur();
               }
             }
           }}

@@ -3,9 +3,9 @@ import { type Editor } from "@tiptap/react";
 
 interface EditorStore {
   editor: Editor | null;
-  pageData: { id: number; content: string }[];
-  setPageData: (data: { id: number; content: string }, index: number) => void;
-  addNewPage: (index: number) => void;
+  pageData: { content: string }[];
+  setPageData: (data: { content: string }, index: number) => void;
+  addNewPage: (index: number, data?: { content: string }) => void;
   deletePage: (index: number) => void;
   currentPage: number;
   setCurrentPage: (index: number) => void;
@@ -19,7 +19,6 @@ export const useEditorStore = create<EditorStore>((set) => ({
   editor: null,
   pageData: [
     {
-      id: 1,
       content: `
         <h1>Welcome to Page 1</h1>
         <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
@@ -37,17 +36,18 @@ export const useEditorStore = create<EditorStore>((set) => ({
       return { pageData: updatedPageData };
     });
   },
-  addNewPage: (index) => {
+  addNewPage: (index, data) => {
     set((state) => {
-      const newPageData = {
-        id: state.pageData.length + 1,
-        content: `
-          <h1>Welcome to Page ${state.pageData.length + 1}</h1>
+      const newPageData = data
+        ? data
+        : {
+            content: `
+          <h1>Welcome to Page ${index + 1}</h1>
           `,
-      };
+          };
 
       const updatedPageData = [...state.pageData];
-      updatedPageData.splice(index + 1, 0, newPageData);
+      updatedPageData.splice(index, 0, newPageData);
       return { pageData: updatedPageData };
     });
   },

@@ -17,3 +17,12 @@ export const fonts: { label: string; value: string }[] = [
   { label: "Tahoma", value: "Tahoma" },
   { label: "Garamond", value: "Garamond" },
 ];
+
+export const previewOptions: {
+  label: string;
+  value: "thumbnail" | "index" | "search";
+}[] = [
+  { label: "Thumbnail", value: "thumbnail" },
+  { label: "Index", value: "index" },
+  { label: "Search", value: "search" },
+];

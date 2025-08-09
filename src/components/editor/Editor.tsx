@@ -20,6 +20,7 @@ function Editor() {
   const currentPage = useEditorStore((s) => s.currentPage);
   const setPageData = useEditorStore((s) => s.setPageData);
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
+  const addNewPage = useEditorStore((s) => s.addNewPage);
 
   console.log("pageData", pageData);
   console.log("currentPage", currentPage);
@@ -46,12 +47,15 @@ function Editor() {
       console.log("afterBreak", afterBreak);
 
       // Update current page with content before break
-      setPageData({ id: currentPage + 1, content: beforeBreak }, currentPage);
+      setPageData({ content: beforeBreak }, currentPage);
 
       // Create new page with content after break (if any)
       if (afterBreak.trim()) {
         const newPageId = currentPage + 1;
-        setPageData({ id: newPageId + 1, content: afterBreak }, newPageId);
+        if (pageData.length > newPageId) {
+          //todo :add the data at the specific position
+          addNewPage(newPageId, { content: afterBreak });
+        } else setPageData({ content: afterBreak }, newPageId);
         // Switch to the new page
         setCurrentPage(newPageId);
       }
@@ -74,10 +78,10 @@ function Editor() {
         // Delay the handling to ensure the content is properly set
         setTimeout(() => {
           handlePageBreak();
-        }, 1000);
+        }, 100);
       } else {
         // Normal content update
-        setPageData({ id: currentPage, content }, currentPage);
+        setPageData({ content }, currentPage);
       }
     },
     onSelectionUpdate: ({ editor }) => {
