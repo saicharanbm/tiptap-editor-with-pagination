@@ -10,8 +10,9 @@ import { useEditorStore } from "@/store/useEditorStore";
 import { FontStyleExtension } from "@/extensions/font-size";
 import { LineHeightExtention } from "@/extensions/line-height";
 import { PageBreak } from "@/extensions/page-break";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import CharacterCount from "@tiptap/extension-character-count";
+import { type Editor as EditorType } from "@tiptap/react";
 
 // import Image from "@tiptap/extension-image";
 function Editor() {
@@ -22,6 +23,9 @@ function Editor() {
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const addNewPage = useEditorStore((s) => s.addNewPage);
   const decrementPage = useEditorStore((s) => s.decrementPage);
+
+  const editorRef = useRef(null);
+  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
 
@@ -58,10 +62,122 @@ function Editor() {
     }
   };
 
+  // Add this function outside your component or in a utils file
+  const handleContentOverflow = (
+    editor: EditorType | null,
+    currentPage: number,
+    pageData: { content: string }[],
+    setPageData: (data: { content: string }, index: number) => void
+  ) => {
+    if (!editor) return;
+
+    const editorElement = editor.view.dom;
+    const maxHeight = 1054; // Your fixed page height
+
+    // Check if content is overflowing
+    if (editorElement.scrollHeight <= maxHeight) {
+      return; // No overflow, nothing to do
+    }
+
+    console.log(
+      "Content overflow detected:",
+      editorElement.scrollHeight,
+      "vs max:",
+      maxHeight
+    );
+
+    // Create a temporary container to measure content
+    const tempContainer = document.createElement("div");
+    tempContainer.style.position = "absolute";
+    tempContainer.style.visibility = "hidden";
+    tempContainer.style.width = `${editorElement.clientWidth}px`;
+    tempContainer.className = editorElement.className;
+    tempContainer.style.height = "auto";
+    tempContainer.style.maxHeight = "none";
+    document.body.appendChild(tempContainer);
+
+    const currentContent = editor.getHTML();
+
+    // Parse the content into nodes
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(currentContent, "text/html");
+    const allNodes = Array.from(doc.body.childNodes);
+
+    let fittingContent = "";
+    let overflowContent = "";
+    let overflowStartIndex = -1;
+
+    // Find where the overflow starts
+    for (let i = 0; i < allNodes.length; i++) {
+      const node = allNodes[i];
+      const nodeHTML =
+        node.nodeType === Node.TEXT_NODE
+          ? node.textContent
+          : (node as Element).outerHTML;
+
+      // Test adding this node
+      const testContent = fittingContent + nodeHTML;
+      tempContainer.innerHTML = testContent;
+
+      if (tempContainer.scrollHeight > maxHeight) {
+        // This node causes overflow
+        overflowStartIndex = i;
+        break;
+      }
+
+      fittingContent += nodeHTML;
+    }
+
+    // Get overflow content
+    if (overflowStartIndex !== -1) {
+      overflowContent = allNodes
+        .slice(overflowStartIndex)
+        .map((node) =>
+          node.nodeType === Node.TEXT_NODE
+            ? node.textContent
+            : (node as Element).outerHTML
+        )
+        .join("");
+    }
+
+    document.body.removeChild(tempContainer);
+
+    if (overflowContent.trim()) {
+      console.log("Moving overflow content to next page");
+
+      // Update current page with fitting content only
+      setPageData({ content: fittingContent }, currentPage);
+
+      // Handle next page
+      const nextPageId = currentPage + 1;
+
+      if (pageData.length > nextPageId && pageData[nextPageId]) {
+        // Next page exists, prepend overflow content
+        const existingContent = pageData[nextPageId].content || "";
+        const newContent = overflowContent + existingContent;
+        setPageData({ content: newContent }, nextPageId);
+      } else {
+        // Create new page with overflow content
+        setPageData({ content: overflowContent }, nextPageId);
+      }
+
+      // Set the editor content to fitting content only
+      // Use setTimeout to avoid infinite update loop
+      setTimeout(() => {
+        if (editor.getHTML() !== fittingContent) {
+          editor.commands.setContent(fittingContent);
+        }
+      }, 0);
+    }
+  };
+
   const editor = useEditor({
     onCreate: ({ editor }) => {
       setEditor(editor);
       // Check for overflow after editor is created with initial content
+      setTimeout(() => {
+        handleContentOverflow(editor, currentPage, pageData, setPageData);
+      }, 100);
     },
     onDestroy: () => {
       setEditor(null);
@@ -80,6 +196,9 @@ function Editor() {
       } else {
         // Normal content update
         setPageData({ content }, currentPage);
+        setTimeout(() => {
+          handleContentOverflow(editor, currentPage, pageData, setPageData);
+        }, 50);
       }
     },
     onSelectionUpdate: ({ editor }) => {
@@ -135,148 +254,6 @@ function Editor() {
             editor.chain().focus().insertPageBreak().run();
           }, 0);
         }
-      },
-      handlePaste: (view, event) => {
-        event.preventDefault();
-
-        const html = event.clipboardData?.getData("text/html") || "";
-        if (!html) return true;
-
-        // Get current editor content and cursor position
-        const currentContent = editor.getHTML();
-        const cursorPos = view.state.selection.from;
-
-        // Create a test container with the same styling to measure if content fits
-        const testContainer = document.createElement("div");
-        testContainer.style.position = "absolute";
-        testContainer.style.visibility = "hidden";
-        testContainer.style.width = `${view.dom.clientWidth}px`;
-        testContainer.className = view.dom.className;
-        testContainer.style.height = "auto"; // Let it expand naturally
-        testContainer.style.maxHeight = "none";
-        document.body.appendChild(testContainer);
-
-        // Insert current content + pasted content to test if it all fits
-        const beforeCursor = currentContent.substring(0, cursorPos);
-        const afterCursor = currentContent.substring(cursorPos);
-        const testContent = beforeCursor + html + afterCursor;
-
-        testContainer.innerHTML = testContent;
-        const totalHeight = testContainer.scrollHeight;
-
-        // Get the actual editor height (your fixed height of 1054px)
-        const editorHeight = view.dom.clientHeight; // Should be 1054px based on your CSS
-
-        document.body.removeChild(testContainer);
-
-        console.log("Current content height:", view.dom.scrollHeight);
-        console.log("Test content height:", totalHeight);
-        console.log("Editor max height:", editorHeight);
-        console.log("Content fits:", totalHeight <= editorHeight);
-
-        if (totalHeight <= editorHeight) {
-          // Content fits entirely on current page
-          console.log("All content fits, inserting normally");
-          editor.commands.insertContent(html);
-          return true;
-        }
-
-        // Content doesn't fit, need to split it
-        console.log("Content doesn't fit, splitting...");
-
-        const tempContainer = document.createElement("div");
-        tempContainer.style.position = "absolute";
-        tempContainer.style.visibility = "hidden";
-        tempContainer.style.width = `${view.dom.clientWidth}px`;
-        tempContainer.className = view.dom.className;
-        tempContainer.style.height = "auto";
-        tempContainer.style.maxHeight = "none";
-        document.body.appendChild(tempContainer);
-
-        // Start with current content up to cursor
-        tempContainer.innerHTML = beforeCursor;
-        const baseHeight = tempContainer.scrollHeight;
-
-        const parser = new DOMParser().parseFromString(html, "text/html");
-        const allNodes = Array.from(parser.body.childNodes);
-
-        let fittingHTML = "";
-        let overflowHTML = "";
-        let overflowStartIndex = -1;
-
-        for (let i = 0; i < allNodes.length; i++) {
-          const node = allNodes[i];
-          const nodeHTML =
-            (node as Element).outerHTML || node.textContent || "";
-
-          // Test adding this node
-          const testHTML = beforeCursor + fittingHTML + nodeHTML + afterCursor;
-          tempContainer.innerHTML = testHTML;
-
-          if (
-            tempContainer.scrollHeight > editorHeight &&
-            overflowStartIndex === -1
-          ) {
-            // This node would cause overflow
-            overflowStartIndex = i;
-            break;
-          }
-
-          fittingHTML += nodeHTML;
-        }
-
-        // Get overflow content from the overflow start index
-        if (overflowStartIndex !== -1) {
-          overflowHTML = allNodes
-            .slice(overflowStartIndex)
-            .map((n) => (n as Element).outerHTML || n.textContent || "")
-            .join("");
-        } else {
-          // All nodes fit, but there might be afterCursor content causing overflow
-          // This means we need to move some existing content to next page
-          const currentWithPasted = beforeCursor + fittingHTML;
-          tempContainer.innerHTML = currentWithPasted;
-
-          if (afterCursor.trim() && tempContainer.scrollHeight < editorHeight) {
-            // Try to fit some of the after cursor content
-            tempContainer.innerHTML = currentWithPasted + afterCursor;
-            if (tempContainer.scrollHeight > editorHeight) {
-              // afterCursor needs to go to next page
-              overflowHTML = afterCursor;
-            }
-          }
-        }
-
-        document.body.removeChild(tempContainer);
-
-        console.log("Fitting HTML:", fittingHTML.substring(0, 100) + "...");
-        console.log("Overflow HTML:", overflowHTML.substring(0, 100) + "...");
-
-        // Insert fitting content on current page
-        if (fittingHTML.trim()) {
-          editor.commands.insertContent(fittingHTML);
-        }
-
-        if (overflowHTML.trim()) {
-          // Save current state and create new page
-          const updatedContent = editor.getHTML();
-          setPageData({ content: updatedContent }, currentPage);
-
-          const nextPageId = currentPage + 1;
-          if (pageData.length > nextPageId) {
-            const existingContent = pageData[nextPageId].content || "";
-            setPageData(
-              { content: overflowHTML + existingContent },
-              nextPageId
-            );
-          } else {
-            setPageData({ content: overflowHTML }, nextPageId);
-          }
-
-          setCurrentPage(nextPageId);
-        }
-
-        return true;
       },
     },
     extensions: [
@@ -379,10 +356,48 @@ function Editor() {
 
       if (currentContent !== newContent) {
         editor.commands.setContent(newContent);
+
+        // Check for overflow after content is set
+        setTimeout(() => {
+          handleContentOverflow(editor, currentPage, pageData, setPageData);
+        }, 100);
       }
     }
   }, [currentPage, pageData, editor, setCurrentPage, setPageData]);
-  return <EditorContent editor={editor} className="w-full flex-1 " />;
+
+  // Handle window resize events
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (!editor) return;
+
+      // Debounce resize handling to avoid excessive calls
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+
+      resizeTimeoutRef.current = setTimeout(() => {
+        console.log("Window resized, checking for overflow");
+        handleContentOverflow(editor, currentPage, pageData, setPageData);
+      }, 300); // 300ms debounce
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+    };
+  }, [editor, currentPage, pageData, setPageData]);
+
+  return (
+    <EditorContent
+      editor={editor}
+      className="w-full flex-1 h-[1054px]"
+      ref={editorRef}
+    />
+  );
 }
 
 export default Editor;
