@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function PagePreviewContainer() {
   const pageData = useEditorStore((s) => s.pageData);
+
   const [selectedOption, setSelectedOption] =
     useState<PreviewOptions>("thumbnail");
   const handleOptionChange = (option: PreviewOptions) => {
@@ -13,6 +14,7 @@ function PagePreviewContainer() {
   };
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const currentPage = useEditorStore((s) => s.currentPage);
+  const editor = useEditorStore((s) => s.editor);
 
   // Drag and drop state
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -110,15 +112,30 @@ function PagePreviewContainer() {
                 onDragEnd={handleDragEnd}
                 onClick={() => setCurrentPage(index)}
                 className={cn(
-                  "shadow-md border bg-white w-48 h-62 rounded-md p-1.5 mx-auto overflow-hidden border-[#A5A4A7] select-none cursor-move transition-all duration-200",
+                  "shadow-md border bg-white w-48 h-62 rounded-md mx-auto overflow-hidden border-[#A5A4A7] select-none cursor-move transition-all duration-200 relative",
                   currentPage === index && "border-3 border-blue-400",
                   draggedIndex === index && "opacity-50 transform scale-105",
                   dragOverIndex === index &&
                     draggedIndex !== index &&
                     "border-2 border-dashed border-purple-400 transform scale-102"
                 )}
-                dangerouslySetInnerHTML={{ __html: pageHTML.content }}
-              />
+              >
+                {/* Scaled content container to mimic preview true to editor.*/}
+                <div
+                  className="absolute inset-0 origin-top-left"
+                  style={{
+                    width: editor?.view.dom.clientWidth,
+                    height: editor?.view.dom.clientHeight,
+                    transform: "scale(0.24)", // 192px / 794px ≈ 0.24
+                    transformOrigin: "top left",
+                  }}
+                >
+                  <div
+                    className="tiptap w-full h-full p-4"
+                    dangerouslySetInnerHTML={{ __html: pageHTML.content }}
+                  />
+                </div>
+              </div>
             ))}
         </div>
       </div>

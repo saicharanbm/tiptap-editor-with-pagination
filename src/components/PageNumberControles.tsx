@@ -19,7 +19,11 @@ function PageNumberControles() {
     <PageControlButton direction="right">
       <div className="flex items-center gap-2">
         <span className="text-[#7A797B]">Page</span>
-        <button className="flex items-center" onClick={incrementPage}>
+        <button
+          className="flex items-center disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={incrementPage}
+          disabled={currentPage === pageData.length - 1}
+        >
           <ChevronUpIcon className="size-4" color="#242424" strokeWidth={1.8} />
         </button>
         <input
@@ -41,7 +45,11 @@ function PageNumberControles() {
           }}
         />
 
-        <button className="flex items-center" onClick={decrementPage}>
+        <button
+          className="flex items-center disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={currentPage === 0}
+          onClick={decrementPage}
+        >
           <ChevronDownIcon
             className="size-4"
             color="#242424"

@@ -25,7 +25,7 @@ function ToolBarToggle({
             key={label}
             onClick={() => setSelectedToggle(label)}
             className={cn(
-              "px-3 py-2 rounded-t-md text-toggle-text",
+              "px-3 py-2 rounded-t-md text-toggle-text cursor-pointer hover:text-toggle-text-active hover:font-medium",
               selectedToggle === label &&
                 "bg-toggle-active text-toggle-text-active font-medium"
             )}
