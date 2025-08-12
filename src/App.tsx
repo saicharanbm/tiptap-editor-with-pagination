@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ToolBarToggle from "./components/toolbar/ToolBarToggle";
 import type { ToolBarToggleLabels } from "./types";
@@ -10,6 +10,7 @@ import PagePreview from "./components/preview/PagePreviewContainer";
 import CurrentCharacterCount from "./components/CharacterCount";
 import PageNumberControles from "./components/PageNumberControles";
 import Ruler from "./components/ruler/Ruler";
+import ProductDemoModal from "./components/demo/ProductDemoModal";
 
 /// update insertion logic
 
@@ -19,6 +20,13 @@ function App() {
   const [title, setTitle] = useState(
     "Olga Tellis v. Bombay Municipal Corporation (1985).docx"
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsModalOpen(true);
+    }, 1000);
+  }, []);
 
   return (
     <div className="w-full mx-auto max-w-[1444px] h-screen min-h-96 overflow-y-hidden  bg-[#FCFAFF] flex flex-col md:px-6 pt-3">
@@ -38,6 +46,9 @@ function App() {
 
         <PagePreview />
       </div>
+      {isModalOpen && (
+        <ProductDemoModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+      )}
     </div>
   );
 }
