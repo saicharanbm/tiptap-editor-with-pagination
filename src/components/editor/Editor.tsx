@@ -24,6 +24,7 @@ function Editor() {
   const addNewPage = useEditorStore((s) => s.addNewPage);
   const decrementPage = useEditorStore((s) => s.decrementPage);
   const padding = useEditorStore((s) => s.padding);
+  const showMargin = useEditorStore((s) => s.showMargin);
 
   const editorRef = useRef(null);
   const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -220,7 +221,15 @@ function Editor() {
 
     editorProps: {
       attributes: {
-        style: `padding-left:${padding.left}px; padding-right:${padding.right}px; padding-top:${padding.top}px; padding-bottom:${padding.bottom}px;`,
+        style: `
+  padding-top:${padding.top}px;
+  padding-bottom:${padding.bottom}px;
+  ${
+    showMargin
+      ? `padding-left:${padding.left}px; padding-right:${padding.right}px;`
+      : ""
+  }
+`,
         class:
           "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
       },
@@ -394,7 +403,7 @@ function Editor() {
   return (
     <EditorContent
       editor={editor}
-      // className="w-full flex-1 h-[1054px]"
+      className="w-full flex-1 h-[1054px] overflow-hidden"
       ref={editorRef}
     />
   );

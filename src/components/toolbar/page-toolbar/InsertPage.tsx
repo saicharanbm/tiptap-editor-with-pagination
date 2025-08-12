@@ -1,5 +1,4 @@
 import { FilePlus2Icon } from "lucide-react";
-import ToolBarButton from "../ToolBarButton";
 import { useEditorStore } from "@/store/useEditorStore";
 
 function InsertPage() {
@@ -8,14 +7,16 @@ function InsertPage() {
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
 
   return (
-    <ToolBarButton
-      label="Insert Page"
+    <button
+      className="flex gap-1 p-1 items-center rounded-md  hover:bg-toggle-active hover:text-toggle-text-active  cursor-pointer"
       onClick={() => {
         addNewPage(currentPage + 1);
         setCurrentPage(currentPage + 1);
       }}
-      icon={FilePlus2Icon}
-    />
+    >
+      <span>Insert Page</span>
+      <FilePlus2Icon width={15} strokeWidth={2.5} />
+    </button>
   );
 }
 

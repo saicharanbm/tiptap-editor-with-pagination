@@ -1,5 +1,4 @@
 import { useEditorStore } from "@/store/useEditorStore";
-import ToolBarButton from "../ToolBarButton";
 import { TrashIcon } from "lucide-react";
 
 function DeletePage() {
@@ -7,11 +6,13 @@ function DeletePage() {
   const currentPage = useEditorStore((s) => s.currentPage);
 
   return (
-    <ToolBarButton
-      label="Delete Page"
+    <button
+      className="flex gap-1 p-1 items-center rounded-md  hover:bg-toggle-active hover:text-toggle-text-active  cursor-pointer"
       onClick={() => deletePage(currentPage)}
-      icon={TrashIcon}
-    />
+    >
+      <span>Delete Page</span>
+      <TrashIcon width={15} strokeWidth={2.5} />
+    </button>
   );
 }
 

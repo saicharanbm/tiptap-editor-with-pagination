@@ -11,13 +11,15 @@ function Ruler() {
   const setPadding = useEditorStore((s) => s.setpadding);
   const [isDraggingLeft, setISDraggingLeft] = useState(false);
   const [isDraggingRight, setisDraggingRight] = useState(false);
+  const showRulerMarker = useEditorStore((s) => s.showRulerMarker);
+  const showMargin = useEditorStore((s) => s.showMargin);
 
   const handleLeftMouseDown = () => {
-    setISDraggingLeft(true);
+    if (showMargin) setISDraggingLeft(true);
   };
 
   const handleRightMouseDown = () => {
-    setisDraggingRight(true);
+    if (showMargin) setisDraggingRight(true);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -67,24 +69,29 @@ function Ruler() {
         className="mx-auto w-full min-w-[280px] lg:max-w-[900px]   relative"
         ref={rulerRef}
       >
-        <Marker
-          position={leftPadding}
-          isLeft={true}
-          isDragging={isDraggingLeft}
-          onMouseDown={handleLeftMouseDown}
-          onDoubleClick={() => {
-            setPadding({ left: 26 });
-          }}
-        />
-        <Marker
-          position={rightPadding}
-          isLeft={false}
-          isDragging={isDraggingRight}
-          onMouseDown={handleRightMouseDown}
-          onDoubleClick={() => {
-            setPadding({ right: 26 });
-          }}
-        />
+        {showRulerMarker && (
+          <>
+            <Marker
+              position={leftPadding}
+              isLeft={true}
+              isDragging={isDraggingLeft}
+              onMouseDown={handleLeftMouseDown}
+              onDoubleClick={() => {
+                setPadding({ left: 26 });
+              }}
+            />
+            <Marker
+              position={rightPadding}
+              isLeft={false}
+              isDragging={isDraggingRight}
+              onMouseDown={handleRightMouseDown}
+              onDoubleClick={() => {
+                setPadding({ right: 26 });
+              }}
+            />
+          </>
+        )}
+
         <div className="absolute inset-x-0 bottom-0 h-full">
           <div className="relative h-full" style={{ width: `${width}px` }}>
             {markers.map((marker) => {

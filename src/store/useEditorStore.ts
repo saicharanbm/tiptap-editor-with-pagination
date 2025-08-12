@@ -23,6 +23,12 @@ interface EditorStore {
       bottom: number;
     }>
   ) => void;
+  showHeaderAndFooter: boolean;
+  setShowHeaderAndFooter: (show: boolean) => void;
+  showMargin: boolean;
+  setShowMargin: (show: boolean) => void;
+  showRulerMarker: boolean;
+  setShowRulerMarker: (show: boolean) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set, get) => ({
@@ -197,7 +203,13 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     });
   },
   setEditor: (editor) => set({ editor }),
-  padding: { right: 26, left: 26, top: 26, bottom: 26 },
+  padding: { right: 26, left: 26, top: 20, bottom: 20 },
   setpadding: (padding) =>
     set((state) => ({ padding: { ...state.padding, ...padding } })),
+  showHeaderAndFooter: true,
+  setShowHeaderAndFooter: (show) => set({ showHeaderAndFooter: show }),
+  showMargin: true,
+  setShowMargin: (show) => set({ showMargin: show }),
+  showRulerMarker: true,
+  setShowRulerMarker: (show) => set({ showRulerMarker: show }),
 }));

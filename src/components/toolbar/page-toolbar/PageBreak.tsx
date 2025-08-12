@@ -1,15 +1,16 @@
 import { useEditorStore } from "@/store/useEditorStore";
-import ToolBarButton from "../ToolBarButton";
 import { BetweenHorizonalEndIcon } from "lucide-react";
 
 function PageBreak() {
   const editor = useEditorStore((s) => s.editor);
   return (
-    <ToolBarButton
-      label="Page Break"
+    <button
+      className="flex gap-1 p-1 items-center rounded-md  hover:bg-toggle-active hover:text-toggle-text-active  cursor-pointer"
       onClick={() => editor?.chain().focus().insertPageBreak().run()}
-      icon={BetweenHorizonalEndIcon}
-    />
+    >
+      <span>Page Break</span>
+      <BetweenHorizonalEndIcon width={15} strokeWidth={2.5} />
+    </button>
   );
 }
 
