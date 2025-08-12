@@ -25,6 +25,7 @@ function Editor() {
   const decrementPage = useEditorStore((s) => s.decrementPage);
   const padding = useEditorStore((s) => s.padding);
   const showMargin = useEditorStore((s) => s.showMargin);
+  const showHeaderAndFooter = useEditorStore((s) => s.showHeaderAndFooter);
 
   const editorRef = useRef(null);
   const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -222,8 +223,12 @@ function Editor() {
     editorProps: {
       attributes: {
         style: `
-  padding-top:${padding.top}px;
-  padding-bottom:${padding.bottom}px;
+        ${
+          !showHeaderAndFooter
+            ? `padding-top:20px;
+  padding-bottom:20px;`
+            : ""
+        }
   ${
     showMargin
       ? `padding-left:${padding.left}px; padding-right:${padding.right}px;`
