@@ -1,69 +1,95 @@
-# React + TypeScript + Vite
+# Tiptap Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A powerful, intuitive document editor with advanced page management and formatting capabilities. Built for users who need precise control over document structure and professional presentation.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 📄 Page Management
 
-## Expanding the ESLint configuration
+- **Page Reordering**: Drag and drop pages to reorganize your document structure
+- **Smart Page Breaks**: Insert page breaks at any cursor position to control content flow
+- **Dynamic Page Operations**: Add or remove pages instantly to match your content needs
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🎛️ Layout Controls
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Interactive Ruler**: Drag margin markers to adjust page margins and content positioning
+- **Header & Footer Management**: Toggle headers and footers on/off, perfect for branding and page numbers
+- **Responsive Design**: Optimized for desktop and mobile devices
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 🎨 User Experience
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Modern Interface**: Clean, professional design with intuitive controls
+- **Visual Feedback**: Hover effects and smooth animations for better interaction
+- **Help System**: Comprehensive feature guide with video demonstrations
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/saicharanbm/tiptap-editor-with-pagination.git
+cd tiptap-editor-with-pagination
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework**: React
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Build Tool**: Vite
+- **Language**: TypeScript
+
+## 📱 Usage
+
+### Page Reordering
+
+1. Navigate to the page management section
+2. Click and drag any page thumbnail to reorder
+3. Drop it in the desired position
+4. Changes are saved automatically
+
+### Adding Page Breaks
+
+1. Position your cursor where you want the break
+2. Click the "Page Break" button in the toolbar
+3. All content after the cursor moves to the next page
+
+### Adjusting Margins
+
+1. Use the ruler at the top of the editor
+2. Drag the left or right margin markers
+3. See real-time preview of changes
+4. Release to apply the new margins
+
+### Managing Headers & Footers
+
+1. Access the header/footer controls in settings
+2. Toggle them on/off as needed
+3. Apply changes across all pages
+
+---
+
+**Made with ❤️ by [Sai Charan B M]**
+
+_Star ⭐ this repository if you find it helpful!_
