@@ -344,3 +344,9 @@
 .no-spinner[type="number"] {
   -moz-appearance: textfield;
 }
+
+@media screen and (min-width: 513px) and (max-width: 1023px) {
+  .editor-container {
+    height: calc(100vh - 215px);
+  }
+}

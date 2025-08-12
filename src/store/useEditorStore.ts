@@ -13,8 +13,16 @@ interface EditorStore {
   setCurrentPage: (index: number) => void;
   incrementPage: () => void;
   decrementPage: () => void;
-
   setEditor: (editor: Editor | null) => void;
+  padding: { right: number; left: number; top: number; bottom: number };
+  setpadding: (
+    padding: Partial<{
+      right: number;
+      left: number;
+      top: number;
+      bottom: number;
+    }>
+  ) => void;
 }
 
 export const useEditorStore = create<EditorStore>((set, get) => ({
@@ -189,4 +197,7 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     });
   },
   setEditor: (editor) => set({ editor }),
+  padding: { right: 26, left: 26, top: 26, bottom: 26 },
+  setpadding: (padding) =>
+    set((state) => ({ padding: { ...state.padding, ...padding } })),
 }));

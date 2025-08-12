@@ -9,6 +9,7 @@ import TitleContainer from "./components/TitleContainer";
 import PagePreview from "./components/preview/PagePreviewContainer";
 import CurrentCharacterCount from "./components/CharacterCount";
 import PageNumberControles from "./components/PageNumberControles";
+import Ruler from "./components/ruler/Ruler";
 
 /// update insertion logic
 
@@ -29,6 +30,7 @@ function App() {
       {selectedToolBarToggle === "Text" ? <TextToolBar /> : <PageToolBar />}
       <div className="lg:grid lg:grid-cols-12  ">
         <div className="lg:col-span-9 relative">
+          <Ruler />
           <EditorContainer />
           <CurrentCharacterCount />
           <PageNumberControles />

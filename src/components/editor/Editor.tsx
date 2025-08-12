@@ -23,6 +23,7 @@ function Editor() {
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const addNewPage = useEditorStore((s) => s.addNewPage);
   const decrementPage = useEditorStore((s) => s.decrementPage);
+  const padding = useEditorStore((s) => s.padding);
 
   const editorRef = useRef(null);
   const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -219,10 +220,9 @@ function Editor() {
 
     editorProps: {
       attributes: {
-        // style:
-        //   "padding-left:34px; padding-right:34px; padding-top:34px; padding-bottom:34px;",
+        style: `padding-left:${padding.left}px; padding-right:${padding.right}px; padding-top:${padding.top}px; padding-bottom:${padding.bottom}px;`,
         class:
-          "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text prose prose-sm sm:prose lg:prose-lg xl:prose-2xl",
+          "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
       },
       handleKeyDown: (view, event) => {
         const pos = view.state.selection.from;
@@ -394,7 +394,7 @@ function Editor() {
   return (
     <EditorContent
       editor={editor}
-      className="w-full flex-1 h-[1054px]"
+      // className="w-full flex-1 h-[1054px]"
       ref={editorRef}
     />
   );

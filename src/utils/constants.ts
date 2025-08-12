@@ -26,3 +26,5 @@ export const previewOptions: {
   { label: "Index", value: "index" },
   { label: "Search", value: "search" },
 ];
+
+export const markers = Array.from({ length: 91 }, (_, i) => i);
