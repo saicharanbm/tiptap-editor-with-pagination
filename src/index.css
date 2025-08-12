@@ -129,6 +129,7 @@
 
 .tiptap {
   /* Table-specific styling */
+  overflow: hidden;
   table {
     border-collapse: collapse;
     margin: 0;

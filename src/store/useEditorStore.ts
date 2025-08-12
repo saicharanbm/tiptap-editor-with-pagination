@@ -40,47 +40,13 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
         <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
-        <h1>Welcome to Page 1</h1>
-        <p>This is the first page of your document. You can edit this content and use the page break feature to move content to the next page.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Try adding a page break to see how content gets transferred to the next page!</p>
+        
       `,
+    },
+    {
+      content: `
+        <h1>Welcome to Page 2</h1>
+        <p>This is the second page of your document.</p>`,
     },
   ],
   setPageData: (data, index) => {

@@ -75,33 +75,46 @@ function Editor() {
     if (!editor) return;
 
     const editorElement = editor.view.dom;
-    const maxHeight = 1054; // Your fixed page height
+    const maxHeight = 1054;
 
-    // Check if content is overflowing
-    if (editorElement.scrollHeight <= maxHeight) {
-      return; // No overflow, nothing to do
+    // Get computed styles to extract padding
+    const computedStyle = window.getComputedStyle(editorElement);
+    const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+    const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+    const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
+    const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
+
+    const availableHeight = maxHeight - paddingTop - paddingBottom;
+    const availableWidth =
+      editorElement.clientWidth - paddingLeft - paddingRight;
+
+    const contentHeight =
+      editorElement.scrollHeight - paddingTop - paddingBottom;
+
+    if (contentHeight <= availableHeight) {
+      return;
     }
 
-    console.log(
-      "Content overflow detected:",
-      editorElement.scrollHeight,
-      "vs max:",
-      maxHeight
-    );
+    // Store current cursor position before overflow handling
+    const currentSelection = editor.state.selection;
+    const currentPos = currentSelection.from;
 
-    // Create a temporary container to measure content
+    // Create temporary container
     const tempContainer = document.createElement("div");
     tempContainer.style.position = "absolute";
     tempContainer.style.visibility = "hidden";
-    tempContainer.style.width = `${editorElement.clientWidth}px`;
+    tempContainer.style.width = `${availableWidth}px`;
     tempContainer.className = editorElement.className;
     tempContainer.style.height = "auto";
     tempContainer.style.maxHeight = "none";
+    tempContainer.style.paddingTop = `${paddingTop}px`;
+    tempContainer.style.paddingRight = `${paddingRight}px`;
+    tempContainer.style.paddingBottom = `${paddingBottom}px`;
+    tempContainer.style.paddingLeft = `${paddingLeft}px`;
+
     document.body.appendChild(tempContainer);
 
     const currentContent = editor.getHTML();
-
-    // Parse the content into nodes
     const parser = new DOMParser();
     const doc = parser.parseFromString(currentContent, "text/html");
     const allNodes = Array.from(doc.body.childNodes);
@@ -109,8 +122,9 @@ function Editor() {
     let fittingContent = "";
     let overflowContent = "";
     let overflowStartIndex = -1;
+    let fittingContentLength = 0;
 
-    // Find where the overflow starts
+    // Find where the overflow starts and track content length
     for (let i = 0; i < allNodes.length; i++) {
       const node = allNodes[i];
       const nodeHTML =
@@ -118,17 +132,23 @@ function Editor() {
           ? node.textContent
           : (node as Element).outerHTML;
 
-      // Test adding this node
       const testContent = fittingContent + nodeHTML;
       tempContainer.innerHTML = testContent;
 
       if (tempContainer.scrollHeight > maxHeight) {
-        // This node causes overflow
         overflowStartIndex = i;
         break;
       }
 
       fittingContent += nodeHTML;
+      // Calculate text length for cursor positioning
+      if (node.nodeType === Node.TEXT_NODE) {
+        fittingContentLength += (node.textContent || "").length;
+      } else {
+        // For elements, estimate based on text content
+        const textContent = (node as Element).textContent || "";
+        fittingContentLength += textContent.length;
+      }
     }
 
     // Get overflow content
@@ -153,27 +173,29 @@ function Editor() {
 
       // Handle next page
       const nextPageId = currentPage + 1;
-
       if (pageData.length > nextPageId && pageData[nextPageId]) {
-        // Next page exists, prepend overflow content
         const existingContent = pageData[nextPageId].content || "";
         const newContent = overflowContent + existingContent;
         setPageData({ content: newContent }, nextPageId);
       } else {
-        // Create new page with overflow content
         setPageData({ content: overflowContent }, nextPageId);
       }
 
-      // Set the editor content to fitting content only
-      // Use setTimeout to avoid infinite update loop
+      // Set the editor content and adjust cursor position
       setTimeout(() => {
         if (editor.getHTML() !== fittingContent) {
           editor.commands.setContent(fittingContent);
+
+          // Adjust cursor position if it was in the overflow content
+          if (currentPos > fittingContentLength) {
+            // Cursor was in overflow content, move to end of current page
+            const endPos = Math.max(1, fittingContentLength);
+            editor.commands.setTextSelection(endPos);
+          }
         }
       }, 0);
     }
   };
-
   const editor = useEditor({
     onCreate: ({ editor }) => {
       setEditor(editor);
@@ -236,7 +258,7 @@ function Editor() {
   }
 `,
         class:
-          "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
+          "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] oberflow-y-hidden w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
       },
       handleKeyDown: (view, event) => {
         const pos = view.state.selection.from;
@@ -408,7 +430,7 @@ function Editor() {
   return (
     <EditorContent
       editor={editor}
-      className="w-full flex-1 h-[1054px] overflow-hidden"
+      className="w-full flex-1 h-[1054px] overflow-y-hidden"
       ref={editorRef}
     />
   );

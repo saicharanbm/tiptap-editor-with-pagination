@@ -6,6 +6,8 @@ import { useState } from "react";
 
 function PagePreviewContainer() {
   const pageData = useEditorStore((s) => s.pageData);
+  const padding = useEditorStore((s) => s.padding);
+  const showHeaderAndFooter = useEditorStore((s) => s.showHeaderAndFooter);
 
   const [selectedOption, setSelectedOption] =
     useState<PreviewOptions>("thumbnail");
@@ -112,7 +114,7 @@ function PagePreviewContainer() {
                 onDragEnd={handleDragEnd}
                 onClick={() => setCurrentPage(index)}
                 className={cn(
-                  "shadow-md border bg-white w-48 h-62 rounded-md mx-auto overflow-hidden border-[#A5A4A7] select-none cursor-move transition-all duration-200 relative",
+                  "shadow-md border bg-white w-46 h-56 rounded-md mx-auto overflow-hidden border-[#A5A4A7] select-none cursor-move transition-all duration-200 relative",
                   currentPage === index && "border-3 border-blue-400",
                   draggedIndex === index && "opacity-50 transform scale-105",
                   dragOverIndex === index &&
@@ -124,14 +126,24 @@ function PagePreviewContainer() {
                 <div
                   className="absolute inset-0 origin-top-left"
                   style={{
-                    width: editor?.view.dom.clientWidth,
+                    width: editor?.view.dom.clientWidth || "900px",
                     height: editor?.view.dom.clientHeight,
-                    transform: "scale(0.24)", // 192px / 794px ≈ 0.24
+                    transform: "scale(0.2)", // 192px / 794px ≈ 0.24
                     transformOrigin: "top left",
                   }}
                 >
                   <div
-                    className="tiptap w-full h-full p-4"
+                    className={cn(
+                      `tiptap  h-full `,
+                      !showHeaderAndFooter
+                        ? "pt-[20px] pb-[20px]"
+                        : "pt-[0px] pb-[0px]"
+                    )}
+                    style={{
+                      width: `${editor?.view.dom.clientWidth}||800px`,
+                      paddingLeft: `${padding.left}px`,
+                      paddingRight: `${padding.right}px`,
+                    }}
                     dangerouslySetInnerHTML={{ __html: pageHTML.content }}
                   />
                 </div>
