@@ -29,23 +29,24 @@ function App() {
   }, []);
 
   return (
-    <div className="w-full mx-auto max-w-[1444px] h-screen min-h-96 overflow-y-hidden  bg-[#FCFAFF] flex flex-col md:px-6 pt-3">
+    <div className="w-full mx-auto max-w-[1444px] h-screen min-h-96 bg-[#FCFAFF] flex flex-col md:px-6 pt-3">
       <TitleContainer title={title} setTitle={setTitle} />
       <ToolBarToggle
         selectedToggle={selectedToolBarToggle}
         setSelectedToggle={setSelectedToolBarToggle}
       />
       {selectedToolBarToggle === "Text" ? <TextToolBar /> : <PageToolBar />}
-      <div className="lg:grid lg:grid-cols-12  ">
-        <div className="lg:col-span-9 relative">
+
+      <div className="grid grid-cols-12 flex-1 overflow-hidden">
+        <div className="col-span-12 lg:col-span-9 relative flex flex-col overflow-hidden">
           <Ruler />
           <EditorContainer />
           <CurrentCharacterCount />
           <PageNumberControles />
         </div>
-
         <PagePreview />
       </div>
+
       {isModalOpen && (
         <ProductDemoModal open={isModalOpen} onOpenChange={setIsModalOpen} />
       )}

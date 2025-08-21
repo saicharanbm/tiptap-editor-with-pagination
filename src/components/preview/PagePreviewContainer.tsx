@@ -78,8 +78,9 @@ function PagePreviewContainer() {
   };
 
   return (
-    <div className="bg-[#FCFAFF] h-[calc(100vh-189px)] hidden lg:col-span-3 lg:block pl-3 pt-1 ">
-      <div className="flex gap-2 p-2">
+    <div className="bg-[#FCFAFF] hidden lg:col-span-3 lg:flex lg:flex-col pl-3 pt-1">
+      {/* Header (buttons / options) */}
+      <div className="flex gap-2 p-2 shrink-0">
         {previewOptions.map(({ label, value }) => {
           return (
             <button
@@ -95,12 +96,13 @@ function PagePreviewContainer() {
                 className={cn(
                   selectedOption === value && "border-b-2 border-[#694C80]"
                 )}
-              ></div>
+              />
             </button>
           );
         })}
       </div>
-      <div className="preview-container bg-white p-4 overflow-y-auto h-full border-t-2 border-[#A5A4A7]">
+
+      <div className="preview-container flex-1 bg-white p-4 overflow-y-auto border-t-2 border-[#A5A4A7]">
         <div className="flex flex-col gap-4">
           {selectedOption === "thumbnail" &&
             pageData.map((pageHTML, index) => (
