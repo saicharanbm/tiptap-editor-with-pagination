@@ -14,7 +14,7 @@ function HeaderToggle() {
         "flex gap-1 p-1 items-center rounded-md  hover:bg-toggle-active hover:text-toggle-text-active  cursor-pointer",
         showHeaderAndFooter && " bg-toggle-active text-toggle-text-active"
       )}
-      onClick={() => setShowHeaderAndFooter(!showHeaderAndFooter)}
+      onClick={() => setShowHeaderAndFooter()}
     >
       <span>Header & Footer</span>
       {showHeaderAndFooter ? (

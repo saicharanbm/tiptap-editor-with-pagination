@@ -12,7 +12,7 @@ function RulerToggle() {
         "flex gap-1 p-1 items-center rounded-md  hover:bg-toggle-active hover:text-toggle-text-active  cursor-pointer",
         showRulerMarker && " bg-toggle-active text-toggle-text-active"
       )}
-      onClick={() => setShowRulerMarker(!showRulerMarker)}
+      onClick={() => setShowRulerMarker()}
     >
       <span>Ruler Marker</span>
       {showRulerMarker ? (

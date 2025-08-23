@@ -7,7 +7,6 @@ function PageNumberControles() {
   const currentPage = useEditorStore((s) => s.currentPage);
   const [inputValue, setInputValue] = useState<string>(String(currentPage + 1));
   const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
-  const pageData = useEditorStore((s) => s.pageData);
   const incrementPage = useEditorStore((s) => s.incrementPage);
   const decrementPage = useEditorStore((s) => s.decrementPage);
 
@@ -22,7 +21,7 @@ function PageNumberControles() {
         <button
           className="flex items-center disabled:cursor-not-allowed disabled:opacity-50"
           onClick={incrementPage}
-          disabled={currentPage === pageData.length - 1}
+          disabled={currentPage === 1}
         >
           <ChevronUpIcon className="size-4" color="#242424" strokeWidth={1.8} />
         </button>
@@ -57,7 +56,7 @@ function PageNumberControles() {
           />
         </button>
 
-        <span className="text-[#7A797B]">of {pageData.length}</span>
+        <span className="text-[#7A797B]">of {1}</span>
       </div>
     </PageControlButton>
   );

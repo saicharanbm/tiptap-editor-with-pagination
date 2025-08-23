@@ -1,7 +1,6 @@
 import Divider from "./Divider";
 import HeaderToggle from "./page-toolbar/HeaderToggle";
 import MarginToggle from "./page-toolbar/MarginToggle";
-import PageControl from "./page-toolbar/PageControl";
 import RulerToggle from "./page-toolbar/RulerToggle";
 
 function PageToolBar() {
@@ -13,7 +12,6 @@ function PageToolBar() {
       <Divider />
       <RulerToggle />
       <Divider />
-      <PageControl />
     </div>
   );
 }

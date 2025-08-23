@@ -12,7 +12,7 @@ function MarginToggle() {
         "flex gap-1 p-1 items-center rounded-md  hover:bg-toggle-active hover:text-toggle-text-active  cursor-pointer",
         showMargin && " bg-toggle-active text-toggle-text-active"
       )}
-      onClick={() => setShowMargin(!showMargin)}
+      onClick={() => setShowMargin()}
     >
       <span>Margin</span>
       {showMargin ? (
