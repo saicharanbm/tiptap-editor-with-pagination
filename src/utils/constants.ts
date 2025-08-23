@@ -32,41 +32,28 @@ export const markers = Array.from({ length: 91 }, (_, i) => i);
 export const demoFeatures = [
   {
     title: "Smart Page Breaks",
-    description: `Create clean page divisions with our intelligent page break
-              feature. Simply position your cursor where you want the break,
-              then click the page break button to automatically move all
-              subsequent content to a new page.`,
-    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755016655/vettam/page-break_rluwoq.mov",
+    description: `Create clean page divisions with our intelligent page break feature. Simply type your content, and it will automatically move subsequent content to new pages when appropriate.`,
+    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755980491/vettam/v1/v1_pagination_fra6sr.mov",
   },
-  {
-    title: "Page Reordering",
-    description: `Effortlessly reorganize your content by dragging and dropping
-              pages to their desired positions. This intuitive interface makes
-              it simple to restructure your document's flow and maintain logical
-              content organization. `,
-    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755016606/vettam/re-order_gljnag.mov",
-  },
+
   {
     title: "Ruler & Margin Control",
     description: `Precisely control your document layout by dragging the margin
               markers on the ruler. Set left and right margins, adjust
               indentation, and fine-tune spacing for professional formatting.`,
-    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755016630/vettam/ruler_vlgvya.mov",
+    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755980503/vettam/v1/v1_margin_txoi3r.mov",
   },
   {
     title: "Header & Footer Management",
     description: `Take full control of your document layout with flexible header and
               footer settings. Show or hide these sections instantly to create
               clean, professional documents tailored to your needs.`,
-    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755016626/vettam/header_uuudwo.mov",
+    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755980511/vettam/v1/v1_Header_footer_r4iogl.mov",
   },
   {
-    title: "Add & Remove Pages",
-    description: `Take full control of your document structure with powerful page
-              insertion and deletion tools. Add pages anywhere in your document
-              or remove them instantly to create the perfect layout for your
-              content.`,
-    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755016611/vettam/insert_and_delete_xpr2j0.mov",
+    title: "Smart Page Navigation",
+    description: `Navigate lengthy documents with ease using our intuitive page controls. Jump to specific pages by clicking on page thumbnails, or use the up/down arrows to move sequentially through your content. The document automatically scrolls to bring the selected page into view.`,
+    src: "https://res.cloudinary.com/dlbweacrx/video/upload/v1755980523/vettam/v1/v1_pagecontrol_nty8ua.mov",
   },
 ];
 
