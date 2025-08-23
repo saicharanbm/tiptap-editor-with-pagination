@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { type Editor } from "@tiptap/react";
+import { getExistingPageCount } from "@/extensions/paginationPlus";
 
 interface EditorStore {
   editor: Editor | null;
@@ -29,18 +30,18 @@ interface EditorStore {
 export const useEditorStore = create<EditorStore>((set, get) => ({
   editor: null,
 
-  currentPage: 0,
+  currentPage: 1,
   setCurrentPage: (pageNo) => {
     const editor = get().editor;
     if (!editor) return;
-    const pageCount = 1; //getExistingPageCount(editor.view);
+    const pageCount = getExistingPageCount(editor.view);
     if (pageNo < 1 || pageNo > pageCount) return;
     set({ currentPage: pageNo });
   },
   incrementPage: () => {
     const { editor, currentPage } = get();
     if (!editor) return;
-    const pageCount = 1; //getExistingPageCount(editor.view);
+    const pageCount = getExistingPageCount(editor.view);
     if (currentPage === pageCount) return;
     set((state) => ({ currentPage: state.currentPage + 1 }));
   },
