@@ -23,6 +23,18 @@ function Editor() {
   const setEditor = useEditorStore((s) => s.setEditor);
   const showHeaderAndFooter = useEditorStore((s) => s.showHeaderAndFooter);
 
+  const {
+    pageHeight,
+    pageGap,
+    pageBackground,
+    footerRightContent,
+    footerLeftContent,
+    headerLeftContent,
+    headerRightContent,
+    contentMargin,
+    headerAndFooterHeight,
+  } = defaultEditorConfig;
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -113,30 +125,22 @@ function Editor() {
         limit: null,
       }),
       PaginationPlus.configure({
-        pageHeight: defaultEditorConfig.pageHeight,
-        pageGap: defaultEditorConfig.pageGap,
-        pageBreakBackground: defaultEditorConfig.pageBackground,
-        pageHeaderHeight: showHeaderAndFooter
-          ? defaultEditorConfig.headerAndFooterHeight
-          : 0,
-        pageFooterHeight: showHeaderAndFooter
-          ? defaultEditorConfig.headerAndFooterHeight
-          : 0,
-        pageGapBorderSize: defaultEditorConfig.pageGap,
-        footerRight: defaultEditorConfig.footerRightContent,
-        footerLeft: defaultEditorConfig.footerLeftContent,
-        headerLeft: defaultEditorConfig.headerLeftContent,
-        headerRight: defaultEditorConfig.headerRightContent,
+        pageHeight: pageHeight,
+        pageGap: pageGap,
+        pageBreakBackground: pageBackground,
+        pageHeaderHeight: showHeaderAndFooter ? headerAndFooterHeight : 0,
+        pageFooterHeight: showHeaderAndFooter ? headerAndFooterHeight : 0,
+        pageGapBorderSize: pageGap,
+        footerRight: footerRightContent,
+        footerLeft: footerLeftContent,
+        headerLeft: headerLeftContent,
+        headerRight: headerRightContent,
         marginTop: margin.top,
         marginBottom: margin.bottom,
         marginLeft: margin.left,
         marginRight: margin.right,
-        contentMarginTop: showHeaderAndFooter
-          ? defaultEditorConfig.contentMargin
-          : 0,
-        contentMarginBottom: showHeaderAndFooter
-          ? defaultEditorConfig.contentMargin
-          : 0,
+        contentMarginTop: showHeaderAndFooter ? contentMargin : 0,
+        contentMarginBottom: showHeaderAndFooter ? contentMargin : 0,
       }),
     ],
     content: editorContent,
@@ -147,10 +151,14 @@ function Editor() {
           "focus:outline-none bg-white w-full  min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
       },
     },
+    onCreate({ editor }) {
+      setEditor(editor);
+    },
     onUpdate: ({ editor }) => {
       console.log(editor.view.dom);
     },
     onTransaction: ({ editor }) => {
+      console.log(editor.getJSON());
       const { selection } = editor.state;
       const view = editor.view;
 
@@ -159,10 +167,7 @@ function Editor() {
 
       // Position relative to editor content
       const relativeY = coords.top - editorRect.top + view.dom.scrollTop;
-      const activePage = Math.ceil(
-        relativeY /
-          (defaultEditorConfig.pageHeight + defaultEditorConfig.pageGap)
-      );
+      const activePage = Math.ceil(relativeY / (pageHeight + pageGap));
 
       if (activePage !== currentPage) {
         setCurrentPage(activePage);
@@ -184,6 +189,21 @@ function Editor() {
       bottom: margin.bottom,
     });
   }, [margin, editor]);
+
+  // Update pagination when header/footer visibility changes
+  useEffect(() => {
+    if (!editor) return;
+
+    // Use the proper command to update header/footer visibility
+    editor.commands.updateHeaderFooter({
+      headerHeight: showHeaderAndFooter ? headerAndFooterHeight : 0,
+      footerHeight: showHeaderAndFooter ? headerAndFooterHeight : 0,
+      contentMarginTop: showHeaderAndFooter ? contentMargin : 0,
+      contentMarginBottom: showHeaderAndFooter ? contentMargin : 0,
+    });
+    console.log("Updated header/footer visibility");
+    editor.commands.focus();
+  }, [showHeaderAndFooter, editor, contentMargin, headerAndFooterHeight]);
 
   if (!editor) {
     return null;

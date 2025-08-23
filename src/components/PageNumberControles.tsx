@@ -27,7 +27,7 @@ function PageNumberControles() {
   useEffect(() => {
     if (!editor) return;
     const updatePageCount = () => {
-      const pageCount = getExistingPageCount(editor.view);
+      const pageCount = editor?.view ? getExistingPageCount(editor.view) : 1;
       console.log(pageCount);
       setTotalPages(pageCount);
       if (currentPage > pageCount) {

@@ -366,6 +366,10 @@ declare module "@tiptap/core" {
         bottom?: number;
       }) => ReturnType;
       updateHeaderFooter: (content: {
+        headerHeight: number;
+        footerHeight: number;
+        contentMarginTop: number;
+        contentMarginBottom: number;
         headerLeft?: string;
         headerRight?: string;
         footerLeft?: string;
@@ -463,12 +467,21 @@ export const PaginationPlus = Extension.create<PaginationPlusOptions>({
 
       updateHeaderFooter:
         (content: {
+          headerHeight: number;
+          footerHeight: number;
+          contentMarginTop: number;
+          contentMarginBottom: number;
           headerLeft?: string;
           headerRight?: string;
           footerLeft?: string;
           footerRight?: string;
         }) =>
-        ({ tr, dispatch }) => {
+        ({ tr, dispatch, editor }) => {
+          this.options.pageHeaderHeight = content.headerHeight;
+          this.options.pageFooterHeight = content.footerHeight;
+          this.options.contentMarginTop = content.contentMarginTop;
+          this.options.contentMarginBottom = content.contentMarginBottom;
+          // Update only if values are provided
           if (content.headerLeft !== undefined)
             this.options.headerLeft = content.headerLeft;
           if (content.headerRight !== undefined)
@@ -477,6 +490,8 @@ export const PaginationPlus = Extension.create<PaginationPlusOptions>({
             this.options.footerLeft = content.footerLeft;
           if (content.footerRight !== undefined)
             this.options.footerRight = content.footerRight;
+          updateStyles(this.options);
+          updateEditorPadding(editor.view, this.options);
 
           if (dispatch) {
             const transaction = tr
@@ -484,6 +499,7 @@ export const PaginationPlus = Extension.create<PaginationPlusOptions>({
               .setMeta("updated_options", { ...this.options });
             dispatch(transaction);
           }
+
           return true;
         },
     };
