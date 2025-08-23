@@ -7,8 +7,8 @@ import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import { TextStyle, FontFamily, Color } from "@tiptap/extension-text-style";
 import { useEditorStore } from "@/store/useEditorStore";
-import { FontStyleExtension } from "@/extensions/font-size";
-import { LineHeightExtention } from "@/extensions/line-height";
+import { FontStyleExtension } from "@/extensions/fontSize";
+import { LineHeightExtention } from "@/extensions/lineHeight";
 import CharacterCount from "@tiptap/extension-character-count";
 
 // import Image from "@tiptap/extension-image";
