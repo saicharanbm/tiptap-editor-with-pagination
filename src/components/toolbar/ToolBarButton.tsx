@@ -1,24 +1,15 @@
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/useEditorStore";
-import { type LucideIcon } from "lucide-react";
+import type { ToolBarButtonProps } from "@/types";
 import { useEffect, useRef, useState } from "react";
-
-interface ToolBarButtonProps {
-  label: string;
-  onClick: () => void;
-  // isActive?: boolean;
-  icon: LucideIcon;
-  isDisabled?: boolean;
-}
 
 function ToolBarButton({
   label,
   onClick,
-  // isActive = false,
+
   icon: Icon,
   isDisabled = false,
-}: // isDisabled = false,
-ToolBarButtonProps) {
+}: ToolBarButtonProps) {
   const editor = useEditorStore((s) => s.editor);
   const [isActive, setIsActive] = useState(false);
   const stateDataRef = useRef({ isActive, isDisabled });

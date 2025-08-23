@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { headings } from "@/utils/constants";
+import type { HeadingLevel } from "@/types";
 
-type Level = 1 | 2 | 3 | 4 | 5 | 6;
 function TextType() {
   const editor = useEditorStore((s) => s.editor);
   const [open, setOpen] = useState(false); // local dropdown open state
@@ -83,7 +83,7 @@ function TextType() {
               editor
                 ?.chain()
                 .focus()
-                .toggleHeading({ level: value as Level })
+                .toggleHeading({ level: value as HeadingLevel })
                 .run();
             }}
           >

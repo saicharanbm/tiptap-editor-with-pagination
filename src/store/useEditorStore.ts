@@ -1,31 +1,6 @@
 import { create } from "zustand";
-import { type Editor } from "@tiptap/react";
 import { getExistingPageCount } from "@/extensions/paginationPlus";
-
-interface EditorStore {
-  editor: Editor | null;
-
-  setEditor: (editor: Editor | null) => void;
-  currentPage: number;
-  setCurrentPage: (index: number) => void;
-  incrementPage: () => void;
-  decrementPage: () => void;
-  margin: { right: number; left: number; top: number; bottom: number };
-  setMargin: (
-    margin: Partial<{
-      right: number;
-      left: number;
-      top: number;
-      bottom: number;
-    }>
-  ) => void;
-  showHeaderAndFooter: boolean;
-  setShowHeaderAndFooter: () => void;
-  showMargin: boolean;
-  setShowMargin: () => void;
-  showRulerMarker: boolean;
-  setShowRulerMarker: () => void;
-}
+import type { EditorStore } from "@/types";
 
 export const useEditorStore = create<EditorStore>((set, get) => ({
   editor: null,

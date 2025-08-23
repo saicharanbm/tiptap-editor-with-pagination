@@ -1,11 +1,5 @@
+import type { MarkerProps } from "@/types";
 import { FaCaretDown } from "react-icons/fa";
-interface MarkerProps {
-  position: number;
-  isLeft: boolean;
-  isDragging: boolean;
-  onMouseDown: () => void;
-  onDoubleClick: () => void;
-}
 
 function Marker({
   position,
