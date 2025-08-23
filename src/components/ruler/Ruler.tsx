@@ -6,9 +6,9 @@ import { useEditorStore } from "@/store/useEditorStore";
 function Ruler() {
   const rulerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
-  const leftPadding = useEditorStore((s) => s.padding.left);
-  const rightPadding = useEditorStore((s) => s.padding.right);
-  const setPadding = useEditorStore((s) => s.setpadding);
+  const leftMargin = useEditorStore((s) => s.margin.left);
+  const rightMargin = useEditorStore((s) => s.margin.right);
+  const setMargin = useEditorStore((s) => s.setMargin);
   const [isDraggingLeft, setISDraggingLeft] = useState(false);
   const [isDraggingRight, setisDraggingRight] = useState(false);
   const showRulerMarker = useEditorStore((s) => s.showRulerMarker);
@@ -29,12 +29,12 @@ function Ruler() {
       const relativeX = e.clientX - rect.left;
       const currentPosition = Math.max(0, Math.min(relativeX, width));
       if (isDraggingLeft) {
-        const maxLeftPosition = width - rightPadding - minContentWidth;
-        setPadding({ left: Math.min(maxLeftPosition, currentPosition) });
+        const maxLeftPosition = width - rightMargin - minContentWidth;
+        setMargin({ left: Math.min(maxLeftPosition, currentPosition) });
       } else {
-        const maxRightPosition = width - leftPadding - minContentWidth;
+        const maxRightPosition = width - leftMargin - minContentWidth;
         const newRightPosition = Math.max(width - currentPosition, 0);
-        setPadding({ right: Math.min(maxRightPosition, newRightPosition) });
+        setMargin({ right: Math.min(maxRightPosition, newRightPosition) });
       }
     }
   };
@@ -72,21 +72,21 @@ function Ruler() {
         {showRulerMarker && (
           <>
             <Marker
-              position={leftPadding}
+              position={leftMargin}
               isLeft={true}
               isDragging={isDraggingLeft}
               onMouseDown={handleLeftMouseDown}
               onDoubleClick={() => {
-                setPadding({ left: 26 });
+                setMargin({ left: 26 });
               }}
             />
             <Marker
-              position={rightPadding}
+              position={rightMargin}
               isLeft={false}
               isDragging={isDraggingRight}
               onMouseDown={handleRightMouseDown}
               onDoubleClick={() => {
-                setPadding({ right: 26 });
+                setMargin({ right: 26 });
               }}
             />
           </>

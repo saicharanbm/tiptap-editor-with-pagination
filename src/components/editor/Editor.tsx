@@ -6,48 +6,24 @@ import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import { TextStyle, FontFamily, Color } from "@tiptap/extension-text-style";
-import { useEditorStore } from "@/store/useEditorStore";
+
 import { FontStyleExtension } from "@/extensions/fontSize";
 import { LineHeightExtention } from "@/extensions/lineHeight";
+import { useEffect, useRef } from "react";
 import CharacterCount from "@tiptap/extension-character-count";
+import { PaginationPlus } from "@/extensions/paginationPlus";
+import { editorContent, defaultEditorConfig } from "@/utils/constants";
+import { useEditorStore } from "@/store/useEditorStore";
 
-// import Image from "@tiptap/extension-image";
 function Editor() {
+  const editorRef = useRef(null);
+  const margin = useEditorStore((s) => s.margin);
+  const currentPage = useEditorStore((s) => s.currentPage);
+  const setCurrentPage = useEditorStore((s) => s.setCurrentPage);
   const setEditor = useEditorStore((s) => s.setEditor);
-
-  const padding = useEditorStore((s) => s.padding);
-  const showMargin = useEditorStore((s) => s.showMargin);
   const showHeaderAndFooter = useEditorStore((s) => s.showHeaderAndFooter);
 
   const editor = useEditor({
-    onCreate: ({ editor }) => {
-      setEditor(editor);
-    },
-    onTransaction: ({ editor }) => {
-      setEditor(editor);
-    },
-
-    content: "<p></p>",
-
-    editorProps: {
-      attributes: {
-        style: `
-        ${
-          !showHeaderAndFooter
-            ? `padding-top:20px;
-  padding-bottom:20px;`
-            : ""
-        }
-  ${
-    showMargin
-      ? `padding-left:${padding.left}px; padding-right:${padding.right}px;`
-      : ""
-  }
-`,
-        class:
-          "focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] oberflow-y-hidden w-full min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
-      },
-    },
     extensions: [
       StarterKit,
       TaskItem.configure({
@@ -136,13 +112,88 @@ function Editor() {
       CharacterCount.configure({
         limit: null,
       }),
+      PaginationPlus.configure({
+        pageHeight: defaultEditorConfig.pageHeight,
+        pageGap: defaultEditorConfig.pageGap,
+        pageBreakBackground: defaultEditorConfig.pageBackground,
+        pageHeaderHeight: showHeaderAndFooter
+          ? defaultEditorConfig.headerAndFooterHeight
+          : 0,
+        pageFooterHeight: showHeaderAndFooter
+          ? defaultEditorConfig.headerAndFooterHeight
+          : 0,
+        pageGapBorderSize: defaultEditorConfig.pageGap,
+        footerRight: defaultEditorConfig.footerRightContent,
+        footerLeft: defaultEditorConfig.footerLeftContent,
+        headerLeft: defaultEditorConfig.headerLeftContent,
+        headerRight: defaultEditorConfig.headerRightContent,
+        marginTop: margin.top,
+        marginBottom: margin.bottom,
+        marginLeft: margin.left,
+        marginRight: margin.right,
+        contentMarginTop: showHeaderAndFooter
+          ? defaultEditorConfig.contentMargin
+          : 0,
+        contentMarginBottom: showHeaderAndFooter
+          ? defaultEditorConfig.contentMargin
+          : 0,
+      }),
     ],
+    content: editorContent,
+    autofocus: "start",
+    editorProps: {
+      attributes: {
+        class:
+          "focus:outline-none bg-white w-full  min-w-[280px] lg:max-w-[900px] mx-auto cursor-text ",
+      },
+    },
+    onUpdate: ({ editor }) => {
+      console.log(editor.view.dom);
+    },
+    onTransaction: ({ editor }) => {
+      const { selection } = editor.state;
+      const view = editor.view;
+
+      const coords = view.coordsAtPos(selection.head);
+      const editorRect = view.dom.getBoundingClientRect();
+
+      // Position relative to editor content
+      const relativeY = coords.top - editorRect.top + view.dom.scrollTop;
+      const activePage = Math.ceil(
+        relativeY /
+          (defaultEditorConfig.pageHeight + defaultEditorConfig.pageGap)
+      );
+
+      if (activePage !== currentPage) {
+        setCurrentPage(activePage);
+      }
+
+      setEditor(editor);
+    },
   });
+
+  // Update pagination when margin changes
+  useEffect(() => {
+    if (!editor) return;
+
+    // Use the proper command to update page margins
+    editor.commands.updatePageMargins({
+      left: margin.left,
+      right: margin.right,
+      top: margin.top,
+      bottom: margin.bottom,
+    });
+  }, [margin, editor]);
+
+  if (!editor) {
+    return null;
+  }
 
   return (
     <EditorContent
       editor={editor}
-      className="w-full flex-1 h-[1054px] overflow-y-hidden"
+      className=" flex-1   overflow-y-hidden"
+      ref={editorRef}
     />
   );
 }
